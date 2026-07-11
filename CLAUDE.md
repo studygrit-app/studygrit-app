@@ -1,10 +1,17 @@
-# Study Timer - Project Instructions
+# StudyGrit Web PWA (v1) - Project Instructions
+
+> **STATUS (2026-07-11): FROZEN reference.** This is v1 of StudyGrit - the
+> vanilla-JS PWA the Flutter app (`../studygrit-flutter`, canonical) was
+> rebuilt from. Keep for feature-logic reference; do not develop here.
+> It also hosts `privacy.html` for the Play Store listing.
 
 ## Hosting
 
-- This website is hosted directly on **GitHub Pages** from the `main` branch
+- Intended for **GitHub Pages** from the `main` branch. As of 2026-07-11
+  Pages is NOT enabled (URL 404s) - enable via repo Settings → Pages →
+  main / root. Expected URL: `https://studygrit-app.github.io/studygrit-app/`
 - All file paths must be **relative** (e.g., `css/base.css`, `js/app.js`, `./index.html`)
-- Never use absolute paths like `/css/base.css` — GitHub Pages serves from a subdirectory (`/study-timer/`), so root-relative paths will break
+- Never use absolute paths like `/css/base.css` — GitHub Pages serves from a subdirectory (the repo name), so root-relative paths will break
 - `index.html` is the single entry point; there is no server-side routing
 
 ## Project Structure
