@@ -11,7 +11,7 @@
   Pages is NOT enabled (URL 404s) - enable via repo Settings → Pages →
   main / root. Expected URL: `https://studygrit-app.github.io/studygrit-app/`
 - All file paths must be **relative** (e.g., `css/base.css`, `js/app.js`, `./index.html`)
-- Never use absolute paths like `/css/base.css` — GitHub Pages serves from a subdirectory (the repo name), so root-relative paths will break
+- Never use absolute paths like `/css/base.css` - GitHub Pages serves from a subdirectory (the repo name), so root-relative paths will break
 - `index.html` is the single entry point; there is no server-side routing
 
 ## Project Structure
@@ -37,27 +37,27 @@ study-timer/
     reports.js        # Reports module (RP)
     tasks.js          # Deadlines (DL) + Reminders (REM) + Recurring (RECUR)
     settings.js       # Reset (RESET) + Notifications (NOTIFY)
-    app.js            # Main App module — init, navigation, focus mode, quotes
+    app.js            # Main App module - init, navigation, focus mode, quotes
     todo.js           # To-Do module (TODO)
     summary.js        # Summary & Analytics module (SUM)
 ```
 
 ## Script Loading Order (Critical)
 
-Scripts load synchronously in index.html in this exact order. Dependencies flow top-down — each file can reference modules defined in files loaded before it:
+Scripts load synchronously in index.html in this exact order. Dependencies flow top-down - each file can reference modules defined in files loaded before it:
 
-1. `data.js` — `esc()`, `QUOTES`, `D`
-2. `ui.js` — `UI`, `DRAG`
-3. `timer.js` — `SR`, `TM`, `PAST`
-4. `plan.js` — `PLAN`
-5. `calendar.js` — `CAL`
-6. `academics.js` — `SYL`, `REV`
-7. `reports.js` — `RP`
-8. `tasks.js` — `DL`, `REM`, `RECUR`
-9. `settings.js` — `RESET`, `NOTIFY`
-10. `app.js` — `App` (main controller)
-11. `todo.js` — `TODO`
-12. `summary.js` — `SUM`
+1. `data.js` - `esc()`, `QUOTES`, `D`
+2. `ui.js` - `UI`, `DRAG`
+3. `timer.js` - `SR`, `TM`, `PAST`
+4. `plan.js` - `PLAN`
+5. `calendar.js` - `CAL`
+6. `academics.js` - `SYL`, `REV`
+7. `reports.js` - `RP`
+8. `tasks.js` - `DL`, `REM`, `RECUR`
+9. `settings.js` - `RESET`, `NOTIFY`
+10. `app.js` - `App` (main controller)
+11. `todo.js` - `TODO`
+12. `summary.js` - `SUM`
 
 **Important:** `app.js` loads before `todo.js` and `summary.js`. Any references to `TODO` or `SUM` inside `app.js` must be wrapped in `try/catch` or deferred (e.g., `setTimeout`).
 
@@ -69,26 +69,26 @@ Scripts load synchronously in index.html in this exact order. Dependencies flow 
 
 ## Key Rules
 
-- No build tools, no bundlers — this is a vanilla HTML/CSS/JS project
+- No build tools, no bundlers - this is a vanilla HTML/CSS/JS project
 - All state is stored in `localStorage` with optional GitHub Gist sync
 - Keep files working without a server (file:// protocol) where possible
-- Test on mobile — this is a mobile-first PWA
+- Test on mobile - this is a mobile-first PWA
 
 ## Goal System
 
-- `D.getGoalForDate(dateKey)` is the **centralized goal lookup** — always use this, never inline the lookup
+- `D.getGoalForDate(dateKey)` is the **centralized goal lookup** - always use this, never inline the lookup
 - 3-tier priority: manual override (`cfg.dailyGoals[date]`) → preset rules (`cfg.goalPresets`) → default fallback
-- Presets use `dayRules: [{day, pattern}]` format — each day can have its own week pattern
+- Presets use `dayRules: [{day, pattern}]` format - each day can have its own week pattern
 - `pattern` values: `'all'` (every week), `'even'` (2nd/4th of month), `'odd'` (1st/3rd/5th of month)
 - Week occurrence is calculated as `Math.ceil(date.getDate() / 7)`
 
 ## Data Model Extras (in config)
 
-- `goalPresets[]` — rule-based daily goals with per-day week patterns
-- `todos{study:[], work:[]}` — nested to-do lists with unlimited children
-- `plans{dateKey:[]}` — daily study plans with subject, topic, estimated/actual hours
-- `journal{dateKey:{}}` — daily journal entries (rating, mood, notes)
-- `recurring[]` + `recurringDone{}` — recurring tasks with completion tracking
+- `goalPresets[]` - rule-based daily goals with per-day week patterns
+- `todos{study:[], work:[]}` - nested to-do lists with unlimited children
+- `plans{dateKey:[]}` - daily study plans with subject, topic, estimated/actual hours
+- `journal{dateKey:{}}` - daily journal entries (rating, mood, notes)
+- `recurring[]` + `recurringDone{}` - recurring tasks with completion tracking
 
 ## Service Worker Caching
 

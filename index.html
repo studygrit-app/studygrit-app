@@ -19,7 +19,7 @@
 .kn-group-btn.on{background:var(--acc2);color:var(--acc);font-weight:700}
 /* Part 2 CSS additions */
 .cal-sess-count{font-family:'JetBrains Mono',monospace;font-size:.42rem;color:var(--td);font-weight:600;line-height:1}
-/* Part 4 CSS — Summary Enhancements */
+/* Part 4 CSS - Summary Enhancements */
 .week-grade{font-family:'JetBrains Mono',monospace;font-size:1.6rem;font-weight:900;line-height:1}
 .delta-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 .delta-card{background:var(--s2);border:1px solid var(--brd);border-radius:8px;padding:8px 10px;text-align:center}
@@ -39,12 +39,12 @@
 .month-bar:hover{opacity:.7}
 .donut{width:80px;height:80px;border-radius:50%;position:relative;flex-shrink:0}
 .donut::after{content:'';position:absolute;inset:18px;border-radius:50%;background:var(--s1)}
-/* Part 5 CSS — Journal Tags */
+/* Part 5 CSS - Journal Tags */
 .jtag-wrap{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px}
 .jtag{font-size:.6rem;padding:3px 8px;border-radius:12px;background:var(--s3);color:var(--td);cursor:pointer;border:1px solid var(--brd);transition:all .15s;font-weight:600}
 .jtag:hover{border-color:var(--acc)}
 .jtag.on{background:var(--acc2);color:var(--acc);border-color:var(--acc)}
-/* Part 6 CSS — Calendar week view, drag, overdue */
+/* Part 6 CSS - Calendar week view, drag, overdue */
 .week-cell{min-height:96px}
 .week-blocks{display:flex;flex-direction:column;gap:1px;margin-top:2px}
 .week-block{height:8px;border-radius:2px;min-width:100%}
@@ -54,48 +54,48 @@
 .drag-handle:active{cursor:grabbing}
 .plan-card.dragging{opacity:.4}
 .plan-card.drag-over{border-color:var(--acc);box-shadow:0 0 0 2px var(--acc2)}
-/* V3 — Streak Calendar */
+/* V3 - Streak Calendar */
 .streak-cal{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin:6px 0}
 .streak-dot{width:100%;aspect-ratio:1;border-radius:3px;background:var(--s3);font-size:0}
 .streak-dot.met{background:var(--grn)}
 .streak-dot.partial{background:var(--yel)}
 .streak-dot.miss{background:var(--s3)}
 .streak-dot.none{background:var(--s2)}
-/* V3 — Goal Achievement Calendar */
+/* V3 - Goal Achievement Calendar */
 .goal-cal{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin:6px 0}
 .gcal-cell{width:100%;aspect-ratio:1;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:.4rem;font-weight:700;color:var(--heading)}
 .gcal-met{background:rgba(52,211,153,.25);color:var(--grn)}
 .gcal-miss{background:rgba(248,113,113,.2);color:var(--red)}
 .gcal-none{background:var(--s2);color:var(--tf)}
-/* V3 — Focus Score Ring */
+/* V3 - Focus Score Ring */
 .focus-ring{position:relative;width:80px;height:80px;flex-shrink:0}
 .focus-ring svg{width:80px;height:80px;transform:rotate(-90deg)}
 .focus-ring-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:900;color:var(--heading)}
-/* V3 — Todo Progress Bar */
+/* V3 - Todo Progress Bar */
 .todo-pbar-bg{height:6px;background:var(--s3);border-radius:3px;margin:6px 0;overflow:hidden}
 .todo-pbar-fg{height:100%;background:var(--grn);border-radius:3px;transition:width .3s}
-/* V3 — Todo Bulk Actions */
+/* V3 - Todo Bulk Actions */
 .todo-bulk-bar{display:flex;align-items:center;gap:8px;padding:6px 10px;background:var(--s2);border:1px solid var(--brd);border-radius:8px;margin:6px 0}
 .todo-bulk{display:inline-flex;align-items:center}
-/* V3 — Todo Drag States */
+/* V3 - Todo Drag States */
 .todo-item.dragging{opacity:.4}
 .todo-item.drag-over{border-color:var(--acc);box-shadow:0 0 0 2px var(--acc2)}
-/* V3 — Todo Swipe */
+/* V3 - Todo Swipe */
 .todo-item{touch-action:pan-y;will-change:transform}
-/* V3 — Calendar Dot Variants */
+/* V3 - Calendar Dot Variants */
 .cal-dot-hollow{width:6px;height:6px;border-radius:50%;border:1.5px solid var(--pur);background:transparent;display:inline-block}
 .cal-dot-filled{width:6px;height:6px;border-radius:50%;background:var(--grn);display:inline-block}
-/* V3 — Onboarding Hints */
+/* V3 - Onboarding Hints */
 .onboard-hint{background:var(--acc2);border:1px solid var(--acc);border-radius:10px;padding:10px 14px;margin:8px 0;font-size:.72rem;color:var(--t2);display:flex;align-items:center;gap:8px}
 .onboard-hint button{margin-left:auto;background:none;border:none;color:var(--acc);font-weight:700;cursor:pointer;font-size:.72rem;white-space:nowrap}
-/* V3 — Offline Banner */
+/* V3 - Offline Banner */
 .offline-banner{background:var(--yel2);border:1px solid var(--yel);border-radius:8px;padding:8px 14px;margin-bottom:8px;font-size:.72rem;font-weight:600;color:var(--yel);text-align:center}
-/* V3 — Plan Color Coding Border */
+/* V3 - Plan Color Coding Border */
 .plan-card[data-color]{border-left:3px solid var(--acc)}
-/* V3 — Mini progress bars for focus score */
+/* V3 - Mini progress bars for focus score */
 .mini-pbar{height:4px;background:var(--s3);border-radius:2px;overflow:hidden;flex:1}
 .mini-pbar-fg{height:100%;border-radius:2px}
-/* V3 — Print / PDF Export */
+/* V3 - Print / PDF Export */
 @media print{
   body{background:#fff!important;color:#000!important}
   .app{padding:0!important;max-width:100%!important}
@@ -146,7 +146,7 @@
 
 
 <div class="app hidden" id="mainApp">
-<div class="offline-banner hidden" id="offlineBanner">⚡ You're offline — changes saved locally</div>
+<div class="offline-banner hidden" id="offlineBanner">⚡ You're offline - changes saved locally</div>
 <!-- Top Bar: Hamburger + Sync + Actions -->
 <div class="top-bar-sticky">
 <div style="display:flex;justify-content:space-between;align-items:center">
@@ -313,7 +313,7 @@
   <div class="sl" data-info="Auto-set your daily study goal based on the day of the week. Manual overrides in Reminders always take priority.">Daily Goal Rules</div>
   <div style="background:var(--s1);border:1px solid var(--brd);border-radius:10px;padding:12px;margin-bottom:10px">
     <div style="font-size:.68rem;color:var(--t2);margin-bottom:8px;font-weight:500">
-      <strong style="color:var(--heading)">Goal Presets</strong> — Auto-set your daily study goal based on the day. Manual overrides (Reminders tab) always take priority.
+      <strong style="color:var(--heading)">Goal Presets</strong> - Auto-set your daily study goal based on the day. Manual overrides (Reminders tab) always take priority.
     </div>
     <div id="goalPresetList"></div>
     <div style="text-align:right;margin-top:6px"><button class="b b-xs b-acc" onclick="PLAN.openAddPreset()">+ Add Rule</button></div>
@@ -321,7 +321,7 @@
   <div class="sl" data-info="Save today's plan as a template to reuse on similar days.">Templates</div>
   <div style="background:var(--s1);border:1px solid var(--brd);border-radius:10px;padding:12px;margin-bottom:10px">
     <div style="font-size:.68rem;color:var(--t2);margin-bottom:6px;font-weight:500">
-      <strong style="color:var(--heading)">Saved Templates</strong> — Save today's plan as a reusable template, or load a previously saved one.
+      <strong style="color:var(--heading)">Saved Templates</strong> - Save today's plan as a reusable template, or load a previously saved one.
     </div>
     <div class="df" style="margin-bottom:6px">
       <button class="b b-xs b-acc" onclick="PLAN.saveAsTemplate()">💾 Save Current Day as Template</button>
@@ -428,7 +428,7 @@
 
 <!-- KNOWLEDGE LOG TAB -->
 <div class="tp" id="p-knowledge">
-  <div class="sl" data-info="Log what you learned outside of timed study — articles, videos, podcasts, books.">Add Knowledge Entry</div>
+  <div class="sl" data-info="Log what you learned outside of timed study - articles, videos, podcasts, books.">Add Knowledge Entry</div>
   <div style="background:var(--s1);border:1px solid var(--brd);border-radius:10px;padding:14px;margin-bottom:10px">
     <div class="df"><span class="df-lbl">Category</span><select class="cat-sel" id="knAddCat" style="flex:1"></select></div>
     <div class="df" style="margin-top:6px"><span class="df-lbl">Topic <span class="req">*</span></span><input type="text" class="inp" id="knAddTopic" placeholder="What did you learn?" style="flex:1"></div>
@@ -501,7 +501,7 @@
   <section class="ag" id="rpStats" style="margin-top:8px"></section>
   <section class="cbrk" id="rpCats" style="margin-top:5px"></section>
   <section class="compare hidden" id="rpCompare2"></section>
-  <div class="sl" data-info="Day-by-day breakdown of every session — click a day to expand and see all topics studied.">Topic Log (Day-wise)</div>
+  <div class="sl" data-info="Day-by-day breakdown of every session - click a day to expand and see all topics studied.">Topic Log (Day-wise)</div>
   <div id="topicLog"></div>
 </div>
 
@@ -516,7 +516,7 @@
 <div class="tp" id="p-remind"><div class="sl" data-info="Override the automatic daily goal for a specific date.">Set Daily Goal</div><div class="df" style="margin-bottom:8px"><span class="df-lbl">Date <span class="req">*</span></span><input type="date" class="inp" id="goalDate" style="width:auto;flex:1"><span class="df-lbl">Hours <span class="req">*</span></span><input type="number" class="inp" id="goalHrs" style="width:60px" min="0" max="24" step="0.5" placeholder="6"><button class="b b-sm b-acc" onclick="REM.setGoal()">Set</button></div><div class="sl" data-info="Track important deadlines. You'll get notifications at 30 days, 7 days, daily within a week, and on the day.">Add Deadline</div><div class="df" style="flex-wrap:wrap;gap:5px;margin-bottom:4px"><input type="text" class="inp" id="dlTitle" placeholder="Title... *" style="flex:2;min-width:120px"><select class="cat-sel" id="dlType" style="min-width:80px"><option value="study">📖 Study</option><option value="work">💼 Work</option><option value="personal">🏠 Personal</option></select><input type="datetime-local" class="inp" id="dlDate" style="flex:1;min-width:150px"><button class="b b-sm b-acc" onclick="DL.add()">Add</button></div><div class="sl">📅 Active Deadlines</div><div id="dlList"></div><div id="remContent"></div></div>
 
 <!-- RECURRING TAB -->
-<div class="tp" id="p-recur"><div class="sl" data-info="Tasks that repeat on a schedule — daily, weekly, specific days, monthly, or yearly.">Add Recurring Task</div><div style="background:var(--s1);border:1px solid var(--brd);border-radius:10px;padding:14px;margin-bottom:10px"><div class="df"><input type="text" class="inp" id="rcTitle" placeholder="Task title... *" style="flex:2"><select class="cat-sel" id="rcType" style="flex:1"></select></div><div class="df" style="margin-top:6px"><span class="df-lbl">Pattern</span><select class="cat-sel" id="rcPattern" onchange="RECUR.patternChange()" style="flex:1"><option value="daily">Daily</option><option value="weekly">Weekly</option><option value="specific">Specific Days</option><option value="fortnightly">Fortnightly</option><option value="monthly">Monthly</option><option value="yearly">Yearly</option></select></div><div id="rcPatternOpts" style="margin-top:6px"></div><div class="df" style="margin-top:6px"><span class="df-lbl">Time</span><input type="time" class="inp" id="rcTime" value="08:00" style="width:110px"><button class="b b-sm b-acc" onclick="RECUR.add()" style="margin-left:auto">Add Task</button></div></div><div class="sl">Manage Types</div><div class="df" style="margin-bottom:10px"><input type="text" class="inp" id="rcNewType" placeholder="New type..." style="flex:1"><button class="b b-sm" onclick="RECUR.addType()">Add Type</button></div><div id="rcTypeList" style="margin-bottom:10px"></div><div class="sl">Filter</div><div class="df" style="margin-bottom:10px"><select class="cat-sel" id="rcFilter" onchange="RECUR.render()" style="flex:1"><option value="">All Types</option></select></div><div id="rcList"></div></div>
+<div class="tp" id="p-recur"><div class="sl" data-info="Tasks that repeat on a schedule - daily, weekly, specific days, monthly, or yearly.">Add Recurring Task</div><div style="background:var(--s1);border:1px solid var(--brd);border-radius:10px;padding:14px;margin-bottom:10px"><div class="df"><input type="text" class="inp" id="rcTitle" placeholder="Task title... *" style="flex:2"><select class="cat-sel" id="rcType" style="flex:1"></select></div><div class="df" style="margin-top:6px"><span class="df-lbl">Pattern</span><select class="cat-sel" id="rcPattern" onchange="RECUR.patternChange()" style="flex:1"><option value="daily">Daily</option><option value="weekly">Weekly</option><option value="specific">Specific Days</option><option value="fortnightly">Fortnightly</option><option value="monthly">Monthly</option><option value="yearly">Yearly</option></select></div><div id="rcPatternOpts" style="margin-top:6px"></div><div class="df" style="margin-top:6px"><span class="df-lbl">Time</span><input type="time" class="inp" id="rcTime" value="08:00" style="width:110px"><button class="b b-sm b-acc" onclick="RECUR.add()" style="margin-left:auto">Add Task</button></div></div><div class="sl">Manage Types</div><div class="df" style="margin-bottom:10px"><input type="text" class="inp" id="rcNewType" placeholder="New type..." style="flex:1"><button class="b b-sm" onclick="RECUR.addType()">Add Type</button></div><div id="rcTypeList" style="margin-bottom:10px"></div><div class="sl">Filter</div><div class="df" style="margin-bottom:10px"><select class="cat-sel" id="rcFilter" onchange="RECUR.render()" style="flex:1"><option value="">All Types</option></select></div><div id="rcList"></div></div>
 
 <!-- SETTINGS TAB -->
 <div class="tp" id="p-sett"><div class="sl" data-info="Manage exam groups and subjects. These appear in timer dropdowns, plans, and reports.">Study Subjects (hold ☰ to drag)</div><div id="mngStudy"></div><div class="manage-add" style="margin-bottom:12px"><input type="text" class="inp" id="addStudy" placeholder="New subject..." style="flex:1"><button class="b b-sm" onclick="App.addCat('study')">Add</button></div><div class="sl">Work Categories (hold ☰ to drag)</div><div id="mngWork"></div><div class="manage-add" style="margin-bottom:12px"><input type="text" class="inp" id="addWork" placeholder="New category..." style="flex:1"><button class="b b-sm" onclick="App.addCat('work')">Add</button></div><div class="sl">Knowledge Categories</div><div id="mngKnowledge"></div><div class="manage-add" style="margin-bottom:12px"><input type="text" class="inp" id="addKnowledge" placeholder="New category..." style="flex:1"><button class="b b-sm" onclick="App.addCat('knowledge')">Add</button></div>
@@ -529,7 +529,7 @@
 <div class="sl">Data Management</div><div class="srow"><div><strong>Export</strong><p class="srow-d">JSON backup</p></div><button class="b b-sm" onclick="D.exportJSON()">Export</button></div><div class="srow"><div><strong>Import</strong><p class="srow-d">Merge from file</p></div><button class="b b-sm" onclick="D.trigImp()">Import</button></div>
 <div class="sl">Force Refresh</div>
 <div class="srow"><div><strong>Refresh Everything</strong><p class="srow-d">Sync data + clear cache + reload page</p></div><button class="b b-sm b-acc" onclick="RESET.forceRefresh()">Refresh</button></div>
-<div class="sl">Reset Data</div><div class="srow"><div><strong>Selective Clear</strong><p class="srow-d">Clear sessions in a date range</p></div><button class="b b-sm b-danger" onclick="RESET.openSelective()">Select & Clear</button></div><div class="srow"><div><strong>Fresh Start</strong><p class="srow-d">Delete all data (sessions, plans, to-dos, journal, etc.) — keeps subjects & settings</p></div><button class="b b-sm b-danger" onclick="RESET.freshStart()">Start Fresh</button></div><div class="srow"><div><strong>Clear Cache</strong><p class="srow-d">Fix PWA/offline issues</p></div><button class="b b-sm" onclick="RESET.clearCache()">Clear Cache</button></div>
+<div class="sl">Reset Data</div><div class="srow"><div><strong>Selective Clear</strong><p class="srow-d">Clear sessions in a date range</p></div><button class="b b-sm b-danger" onclick="RESET.openSelective()">Select & Clear</button></div><div class="srow"><div><strong>Fresh Start</strong><p class="srow-d">Delete all data (sessions, plans, to-dos, journal, etc.) - keeps subjects & settings</p></div><button class="b b-sm b-danger" onclick="RESET.freshStart()">Start Fresh</button></div><div class="srow"><div><strong>Clear Cache</strong><p class="srow-d">Fix PWA/offline issues</p></div><button class="b b-sm" onclick="RESET.clearCache()">Clear Cache</button></div>
 <input type="file" id="fIn" accept=".json" style="display:none" onchange="D.doImp(event)">
 
 <!-- SHORTCUTS SECTION (settings page only) -->
@@ -565,13 +565,13 @@
   
   <div class="sl" style="margin:8px 0 5px;text-align:left">From today's plan?</div>
   <select class="cat-sel" id="smFromPlan" style="width:100%;margin-bottom:8px" onchange="TM.onPlanSelect()">
-    <option value="">— New topic (not from plan) —</option>
+    <option value="">- New topic (not from plan) -</option>
   </select>
   
   <div id="smPastTopicWrap">
     <div class="sl" style="margin:4px 0 5px;text-align:left">Previous topics</div>
     <select class="cat-sel" id="smPastTopic" style="width:100%;margin-bottom:8px" onchange="TM.onPastTopicSelect()">
-      <option value="">— Type new topic below —</option>
+      <option value="">- Type new topic below -</option>
     </select>
   </div>
 
@@ -604,7 +604,7 @@
   </div>
   <div class="sl" style="margin:8px 0 5px;text-align:left">Link to To-Do?</div>
   <select class="cat-sel" id="smLinkTodo" style="width:100%;margin-bottom:8px">
-    <option value="">— None —</option>
+    <option value="">- None -</option>
   </select>
   <div class="modal-btns"><button class="b b-grn" onclick="TM.confirmSave()">Save</button><button class="b" onclick="TM.cancelSave()">Discard</button></div>
 </div></div>
