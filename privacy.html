@@ -34,6 +34,10 @@
 <h2>Authentication</h2>
 <p>We use Google Sign-In via Supabase for authentication. We only access your basic profile information (name, email, profile picture) to identify your account. We do not access your Google Drive, contacts, or other data.</p>
 
+<h2>Google Calendar &amp; Tasks (Optional Integration)</h2>
+<p>If you explicitly connect Google Calendar &amp; Tasks in Settings, the app requests these scopes: read your calendar list, read and edit calendar events, and read and edit tasks. This data is used only to (1) show events from calendars you selected inside the app, (2) show Google Tasks you explicitly imported and tagged, and (3) sync your in-app edits, completions and deletions of those items back to your Google account.</p>
+<p><strong>StudyGrit never creates new events or tasks in your Google account</strong> - the app contains no code path that inserts items. Mirrored Google data is stored on your device and, when cloud sync is on, in your private Supabase row. Disconnecting the integration removes the mirrored Google data from the app, and you can also revoke access anytime at myaccount.google.com/permissions. Google user data is never sold, shared with third parties, or used for advertising, and its use complies with the Google API Services User Data Policy, including the Limited Use requirements.</p>
+
 <h2>Cloud Storage</h2>
 <p>If you choose to sign in, your study data is stored in Supabase (hosted on AWS). Data is encrypted in transit (TLS) and at rest. Each user can only access their own data via Row Level Security policies.</p>
 
@@ -52,7 +56,9 @@
 <h2>Third-Party Services</h2>
 <ul>
   <li>Google Sign-In (authentication)</li>
+  <li>Google Calendar API &amp; Google Tasks API (optional integration)</li>
   <li>Supabase (cloud database)</li>
+  <li>Firebase Cloud Messaging (push notifications)</li>
   <li>Sentry (crash reporting)</li>
 </ul>
 <p>Each service has its own privacy policy.</p>
