@@ -26,38 +26,39 @@
 </head>
 <body>
 <h1><span class="study">STUDY</span><span class="grit">GRIT</span> - Privacy Policy</h1>
-<p class="updated">Last updated: July 2026 &middot; Applies to the StudyGrit Android app (com.studygrit.app)</p>
+<p class="updated">Last updated: October 2026 &middot; Applies to the StudyGrit Android app (com.studygrit.app) and the StudyGrit website</p>
 
-<h2>Data Collection</h2>
-<p>StudyGrit collects and stores your study sessions, plans, tasks, and preferences locally on your device using SQLite. When you sign in with Google, your data is synced to Supabase cloud servers to enable cross-device access.</p>
+<h2>What We Store</h2>
+<p>StudyGrit stores what you put into your "brain": the notes you write or share into the app (including links you paste), the quiz cards made from them and your review history, the files you attach (PDFs, images), your shelf names and settings, and the birthdays you add (a name and a date, optionally the year and a note) so the app can remind you. On the phone this is kept on your device; when you sign in it is also stored in your private cloud account so the phone and the website show the same notes.</p>
 
 <h2>Authentication</h2>
-<p>We use Google Sign-In via Supabase for authentication. We only access your basic profile information (name, email, profile picture) to identify your account. We do not access your Google Drive, contacts, or other data.</p>
-
-<h2>Google Calendar &amp; Tasks (Optional Integration)</h2>
-<p>If you explicitly connect Google Calendar &amp; Tasks in Settings, the app requests these scopes: read your calendar list, read and edit calendar events, and read and edit tasks. This data is used only to (1) show events from calendars you selected inside the app, (2) show Google Tasks you explicitly imported and tagged, and (3) sync your in-app edits, completions and deletions of those items back to your Google account.</p>
-<p><strong>StudyGrit never creates new events or tasks in your Google account</strong> - the app contains no code path that inserts items. Mirrored Google data is stored on your device and, when cloud sync is on, in your private Supabase row. Disconnecting the integration removes the mirrored Google data from the app, and you can also revoke access anytime at myaccount.google.com/permissions. Google user data is never sold, shared with third parties, or used for advertising, and its use complies with the Google API Services User Data Policy, including the Limited Use requirements.</p>
+<p>We use Google Sign-In or email and password via Supabase. From Google we only receive your basic profile (name, email, profile picture) to identify your account. Signing in does not give StudyGrit access to your Google Drive, Calendar, contacts, or any other Google data.</p>
 
 <h2>Cloud Storage</h2>
-<p>If you choose to sign in, your study data is stored in Supabase (hosted on AWS). Data is encrypted in transit (TLS) and at rest. Each user can only access their own data via Row Level Security policies.</p>
+<p>Your data is stored in Supabase (hosted on AWS), encrypted in transit (TLS) and at rest. Row Level Security means each account can only read and change its own notes, cards and files. Attached files sit in a private storage bucket and open only through short-lived links.</p>
+
+<h2>Usage Events</h2>
+<p>To learn which parts of StudyGrit help and which do not, the app and the website record simple usage events in your own account: for example that a note was saved, a search ran and how many results it found, or that a review session finished. When a search finds nothing, the words you searched are kept so we can make search better. These events are never sold, shared, or used for advertising.</p>
 
 <h2>Local Storage</h2>
-<p>If you use the app without signing in, all data stays on your device only. Uninstalling the app will permanently delete all local data.</p>
+<p>If you use the app without signing in, your data stays on your device only. Uninstalling the app permanently deletes that local data.</p>
+
+<h2>AI Assistant Access (Optional)</h2>
+<p>You can make a private access token in Settings to let an AI assistant of your choice (for example Claude) read and tidy your notes through the StudyGrit MCP server. Tokens are stored hashed, can be removed in Settings at any time, and are never shared with anyone else.</p>
 
 <h2>Notifications</h2>
-<p>StudyGrit uses local notifications for reminders and motivational messages. These are processed entirely on your device. No notification data is sent to external servers.</p>
+<p>StudyGrit uses notifications on your phone for your daily revision reminder and a reminder the day before each birthday you add. Push notifications use Firebase Cloud Messaging; no note content is included in them.</p>
 
 <h2>Crash Reporting</h2>
 <p>We use anonymous crash reporting (Sentry) to improve app stability. No personally identifiable information is included in crash reports.</p>
 
 <h2>Data Deletion</h2>
-<p>You can delete all your data by: (1) using Reset All Data in Settings, (2) signing out and uninstalling the app, or (3) contacting us to request cloud data deletion.</p>
+<p>You can delete any note in the app or on the website; it disappears from every device. To erase your whole account and everything stored with it from our servers, email us and we will delete it. Uninstalling the app removes the data on your phone.</p>
 
 <h2>Third-Party Services</h2>
 <ul>
   <li>Google Sign-In (authentication)</li>
-  <li>Google Calendar API &amp; Google Tasks API (optional integration)</li>
-  <li>Supabase (cloud database)</li>
+  <li>Supabase (cloud database and file storage)</li>
   <li>Firebase Cloud Messaging (push notifications)</li>
   <li>Sentry (crash reporting)</li>
 </ul>
