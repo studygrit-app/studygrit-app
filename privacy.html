@@ -20,13 +20,17 @@
   h1 span.study { color: #e53935; }
   h1 span.grit { color: #2e7d32; }
   h2 { font-size: 17px; margin-top: 28px; }
+  h3 { font-size: 15px; margin-top: 18px; margin-bottom: 4px; }
   p, li { font-size: 15px; }
+  a { color: inherit; }
+  .foot { margin-top: 40px; padding-top: 16px; border-top: 1px solid rgba(128, 128, 128, .3); font-size: 13px; display: flex; flex-wrap: wrap; gap: 4px 20px; }
+  .foot a { display: inline-flex; align-items: center; min-height: 44px; }
   .updated { font-size: 13px; opacity: .7; }
 </style>
 </head>
 <body>
 <h1><span class="study">STUDY</span><span class="grit">GRIT</span> - Privacy Policy</h1>
-<p class="updated">Last updated: October 2026 &middot; Applies to the StudyGrit Android app (com.studygrit.app) and the StudyGrit website</p>
+<p class="updated">Last updated: 15 November 2026 &middot; Applies to the StudyGrit Android app (com.studygrit.app), the StudyGrit Voice apps (Android com.studygrit.voice and Windows) and the StudyGrit website</p>
 
 <h2>What We Store</h2>
 <p>StudyGrit stores what you put into your "brain": the notes you write or share into the app (including links you paste), the quiz cards made from them and your review history, the files you attach (PDFs, images), your shelf names and settings, and the birthdays you add (a name and a date, optionally the year and a note) so the app can remind you. The messages and screenshots you send to your inbox are stored privately to build your notes. On the phone this is kept on your device; when you sign in it is also stored in your private cloud account so the phone and the website show the same notes.</p>
@@ -44,7 +48,7 @@
 <p>If you use the app without signing in, your data stays on your device only. Uninstalling the app permanently deletes that local data.</p>
 
 <h2>AI Assistant Access (Optional)</h2>
-<p>You can make a private access token in Settings to let an AI assistant of your choice (for example Claude) read and tidy your notes through the StudyGrit MCP server. Tokens are stored hashed, can be removed in Settings at any time, and are never shared with anyone else.</p>
+<p>You can make a private access token in Settings to let an AI assistant of your choice read and tidy your notes through the StudyGrit MCP server. Tokens are stored hashed, can be removed in Settings at any time, and are never shared with anyone else.</p>
 
 <h2>Notifications</h2>
 <p>StudyGrit uses notifications on your phone for your daily revision reminder and a reminder the day before each birthday you add. Push notifications use Firebase Cloud Messaging; no note content is included in them.</p>
@@ -52,13 +56,41 @@
 <h2>Crash Reporting</h2>
 <p>We use anonymous crash reporting (Sentry) to improve app stability. No personally identifiable information is included in crash reports.</p>
 
-<h2>Data Deletion</h2>
-<p>You can delete any note in the app or on the website; it disappears from every device. To erase your whole account and everything stored with it from our servers, email us and we will delete it. Uninstalling the app removes the data on your phone.</p>
+<h2 id="voice">StudyGrit Voice (dictation app)</h2>
+<p>StudyGrit Voice turns your speech into text: the Android app (com.studygrit.voice) shows a floating microphone button over your other apps, and the Windows app does the same on a computer. It uses your StudyGrit account. This is exactly what it handles and why.</p>
+
+<h3>Microphone and audio</h3>
+<p>The app uses the microphone only while you dictate: from the moment you tap (or hold) the button until you stop. While it records, a notification and the red button show that it is listening. The recording is kept on your device only until our server confirms it has the text, then it is deleted (if an upload fails it is kept, so your words are not lost, and sent again later). Our server sends the audio over an encrypted connection to a third-party speech-recognition service that turns it into text and returns it. Audio is never stored on our servers and is never used for advertising; the service provider processes it only to give us the text.</p>
+
+<h3>Your dictated text</h3>
+<p>The text is tidied automatically (punctuation, filler words, the spellings in your personal dictionary) by a third-party text-processing service, then typed into the box you are using. Your dictation history (what you said and the tidied text), personal dictionary, corrections log and settings are stored in your private account so you can copy, edit or insert them again. History and the corrections log are deleted automatically after 60 days (and only your newest 200 dictations are kept); dictation records and usage events are deleted after 30 days.</p>
+
+<h3>Accessibility service (Android)</h3>
+<p>StudyGrit Voice uses the Android Accessibility service for one job: to type your dictated text into the text box you are using in another app, and to know when the keyboard is open so the button shows only while you type. To do this it looks at which box has focus, whether it is a password or number box (it never types into a password box), the text around your cursor at the moment it inserts your words (to put them in the right place and check they landed; this is not stored or sent), and the name of the app in front (so the button stays off in banking and payment apps, and so we can see which apps dictation works in). It does not collect or store what you type, what is on your screen, or your passwords, and it takes no action in other apps except inserting the text you dictated. You switch it on yourself in Android Settings after an in-app explanation and consent screen, and you can switch it off at any time.</p>
+
+<h3>Display over other apps (Android)</h3>
+<p>Used only to show the floating microphone button.</p>
+
+<h3>Voice usage events</h3>
+<p>The app records simple events in your account so we can make it faster and more reliable: for example that a dictation started, how long each step took, the name of the app the text went into, how it was inserted, and error codes. These events never contain your audio or your text.</p>
+
+<h3>Subscriptions</h3>
+<p>StudyGrit Voice Pro is bought through Google Play. Google handles the payment; we receive only the purchase token, the plan and its status, never your card or bank details. You can cancel at any time in the Google Play app (Payments and subscriptions).</p>
+
+<h3>Sharing</h3>
+<p>We do not sell your data, the app shows no ads, and we share your audio and text with no one except the service providers described in this policy, only to provide dictation. Everything travels encrypted (TLS).</p>
+
+<h2 id="delete">Data Deletion</h2>
+<p>You can delete any note in the app or on the website, and any dictation in StudyGrit Voice History; it disappears from every device. To delete your whole account and everything stored with it, open StudyGrit Voice, Settings, Delete account, or follow the steps at <a href="https://studygrit-website.studygrit-app.workers.dev/delete-account">studygrit-website.studygrit-app.workers.dev/delete-account</a>, or email us. Your voice data is deleted at once and the account itself within 30 days. Uninstalling an app removes the data on that device.</p>
 
 <h2>Third-Party Services</h2>
 <ul>
   <li>Google Sign-In (authentication)</li>
   <li>Supabase (cloud database and file storage)</li>
+  <li>Cloudflare (the servers that run StudyGrit Voice)</li>
+  <li>A third-party speech-recognition service (turns StudyGrit Voice audio into text)</li>
+  <li>A third-party text-processing service (tidies dictated text)</li>
+  <li>Google Play Billing (StudyGrit Voice Pro subscriptions)</li>
   <li>Firebase Cloud Messaging (push notifications)</li>
   <li>Sentry (crash reporting)</li>
 </ul>
@@ -66,5 +98,10 @@
 
 <h2>Contact</h2>
 <p>For privacy questions or data deletion requests: <strong>studygrit.app@gmail.com</strong></p>
+
+<footer class="foot">
+  <a href="https://studygrit-website.studygrit-app.workers.dev/delete-account">Delete account</a>
+  <a href="mailto:studygrit.app@gmail.com">studygrit.app@gmail.com</a>
+</footer>
 </body>
 </html>
