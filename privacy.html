@@ -36,7 +36,7 @@
 <p>StudyGrit stores what you put into it: your tasks, projects and goals, the blocks on your calendar, your reminders and planning settings, and your chat with the StudyGrit AI (your messages, its replies and the files or screenshots you attach). It also stores your "brain": the notes you write or share into the app (including links you paste), the quiz cards made from them and your review history, the files you attach (PDFs, images), your shelf names and settings, and the birthdays you add (a name and a date, optionally the year and a note) so the app can remind you. The messages and screenshots you send to your inbox are stored privately to build your notes. On the phone this is kept in your private cloud account, so the Android app and the website show the same data. A new account starts empty: nobody else's data is ever shown to it.</p>
 
 <h2>The AI Chat</h2>
-<p>When you send a message to the StudyGrit AI (in the chat, the "Tell StudyGrit" box, or "Ask about this card"), our server sends your message and the parts of YOUR OWN data the AI needs to answer (for example today's tasks and calendar, or the note you asked about) over an encrypted connection to Anthropic's Claude API, which writes the reply. Anthropic processes this only as our service provider to produce the reply; it is not used for advertising. The reply is stored in your account. The AI can make mistakes: check important answers. You can report any AI reply that is offensive, harmful or wrong with the Report button under it; the report (the reason, your note and the reply text) is sent to us so we can make the AI safer. Free accounts get a small number of AI messages each day; StudyGrit Pro gets more.</p>
+<p>When you send a message to the StudyGrit AI (in the chat, the "Tell StudyGrit" box, or "Ask about this card"), our server sends your message and the parts of YOUR OWN data the AI needs to answer (for example today's tasks and calendar, or the note you asked about) over an encrypted connection to our AI service provider, which writes the reply. The provider processes this only as our service provider to produce the reply; it is not used for advertising. The reply is stored in your account. The AI can make mistakes: check important answers. You can report any AI reply that is offensive, harmful or wrong with the Report button under it; the report (the reason, your note and the reply text) is sent to us so we can make the AI safer. Free accounts get a small number of AI messages each day; StudyGrit Pro gets more.</p>
 
 <h2>Authentication</h2>
 <p>We use Google Sign-In or email and password via Supabase. From Google we only receive your basic profile (name, email, profile picture) to identify your account. Signing in does not give StudyGrit access to your Google Drive, Calendar, contacts, or any other Google data.</p>
@@ -45,7 +45,7 @@
 <p>Your data is stored in Supabase (hosted on AWS), encrypted in transit (TLS) and at rest. Row Level Security means each account can only read and change its own notes, cards and files. Attached files sit in a private storage bucket and open only through short-lived links.</p>
 
 <h2>Usage Events</h2>
-<p>To learn which parts of StudyGrit help and which do not, the app and the website record simple usage events in your own account: for example that a note was saved, a search ran and how many results it found, or that a review session finished. When a search finds nothing, the words you searched are kept so we can make search better. These events are never sold, shared, or used for advertising.</p>
+<p>To learn which parts of StudyGrit help and which do not, the app and the website record simple usage events in your own account: for example that a note was saved, a search ran and how many results it found, or that a review session finished. When a search finds nothing, the words you searched are kept so we can make search better. Events also include timings (how long a step took) and error codes, so we can find and fix slow or broken parts (diagnostics). These events are never sold, shared, or used for advertising.</p>
 
 <h2>Local Storage</h2>
 <p>The app and the website keep a small copy on your device so they open fast and keep a message you have not sent yet (for example your settings, a draft, and messages waiting for a connection). Uninstalling the app or clearing the site's data removes that copy; your account data stays in the cloud until you delete your account.</p>
@@ -81,7 +81,7 @@
 <p>We do not sell your data, the app shows no ads, and we share your audio and text with no one except the service providers described in this policy, only to provide dictation. Everything travels encrypted (TLS).</p>
 
 <h2 id="pro">StudyGrit Pro (Subscriptions)</h2>
-<p>StudyGrit Pro is bought only inside the StudyGrit Android app, through Google Play (monthly or yearly; you can try it free for 14 days without a card). Google handles the payment; we receive only the purchase token, the plan and its status, never your card or bank details. You can cancel any time in the Google Play app (Payments and subscriptions).</p>
+<p>StudyGrit Pro (called Lifefile Pro in the Android app; monthly or yearly, and you can try it free for 14 days without a card) is bought in one of two ways. Inside the Android app it is bought through Google Play: Google handles the payment and we receive only the purchase token, the plan and its status. On the StudyGrit website it is bought through Gumroad, a payment processor: Gumroad handles the payment and receives your email address and your account id (so the plan reaches the right account), and we receive the plan, its status and Gumroad's purchase ids. We never see your card or bank details. A plan bought in Google Play is cancelled in the Google Play app (Payments and subscriptions); a plan bought on the website is cancelled from the link in your purchase receipt.</p>
 
 <h2 id="delete">Data Deletion</h2>
 <p>You can delete any task, note or chat in the app or on the website, and any dictation in StudyGrit Voice History; it disappears from every device. To delete your whole account and everything stored with it, open the StudyGrit app, Settings, Delete account (or StudyGrit Voice, Settings, Delete account), or follow the steps at <a href="https://studygrit-website.studygrit-app.workers.dev/delete-account">studygrit-website.studygrit-app.workers.dev/delete-account</a>, or email us. Your voice data is deleted at once and the account itself within 30 days. Uninstalling an app removes the data on that device.</p>
@@ -91,11 +91,13 @@
   <li>Google Sign-In (authentication)</li>
   <li>Supabase (cloud database and file storage)</li>
   <li>Cloudflare (the servers that run StudyGrit and StudyGrit Voice)</li>
-  <li>Anthropic (the Claude API that writes the AI chat's replies)</li>
+  <li>Our AI service provider (writes the AI chat's replies)</li>
   <li>A third-party speech-recognition service (turns StudyGrit Voice audio into text)</li>
   <li>A third-party text-processing service (tidies dictated text)</li>
   <li>Google Play Billing (StudyGrit Pro and StudyGrit Voice Pro subscriptions)</li>
   <li>Google's push service (Firebase Cloud Messaging) for notifications on Android</li>
+    <li>Gumroad (the payment processor for StudyGrit Pro bought on the website)</li>
+    <li>Telegram (the developer's own alert channel: when you report an AI reply, a short excerpt of it reaches the developer there - never who sent the report)</li>
 </ul>
 <p>Each service has its own privacy policy.</p>
 
