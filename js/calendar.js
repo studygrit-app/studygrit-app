@@ -623,7 +623,7 @@ var CAL=(function(){
       /* knowledge */
       if(lblEl)lblEl.textContent='Category';
       var opts='<option value="">Select...</option>';
-      (cfg.knowledgeCategories||['General','Other']).forEach(function(c){opts+='<option>'+esc(c)+'</option>'});
+      D.withUsed(cfg.knowledgeCategories||['General','Other'],(D.getLocal().knowledge||[]).map(function(e){return e.category})).forEach(function(c){opts+='<option>'+esc(c)+'</option>'});
       subjEl.innerHTML=opts;
       if(topicEl)topicEl.placeholder='What did you learn?';
     }

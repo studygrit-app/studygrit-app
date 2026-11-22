@@ -3,7 +3,7 @@
 function esc(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
 var QUOTES=["Small steps add up.","Start with one task.","Focus on what is in front of you.","Consistency beats intensity.","Progress, not perfection."];
 
-var D=(function(){var SK='st3_d',GK='st3_g',TK='st3_t',GF='study_timer_v3.json';var DEF={config:{studySubjects:['General','Other'],workCategories:['General','Other'],knowledgeCategories:['General','Other'],theme:'dark',dailyGoals:{'default':6},bedtime:21.5,effectiveMins:50,wakeTime:6,recurringTypes:['General','Other'],goalPresets:[{id:'preset-study-day',name:'Study day',hours:6,dayRules:[],active:false}]},deadlines:[],study:{},work:{},syllabus:{},revisions:[],recurring:[],recurringDone:{},knowledge:[]};function gl(){try{var d=JSON.parse(localStorage.getItem(SK));if(!d||!d.config)return cp(DEF);if(!d.revisions)d.revisions=[];return d}catch(e){return cp(DEF)}}function sl(d){localStorage.setItem(SK,JSON.stringify(d))}function cp(o){return JSON.parse(JSON.stringify(o))}function gid(){return localStorage.getItem(GK)||''}function sgid(v){localStorage.setItem(GK,v)}function tok(){return localStorage.getItem(TK)||''}function stok(v){localStorage.setItem(TK,v)}function cloud(){return !!(tok()&&gid())}function tk(d){d=d||new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}function getSess(t,dk){var d=gl();return(d[t]&&d[t][dk])||[]}function todayS(t){return getSess(t,tk())}function addS(type,dk,s){var d=gl();if(!d[type])d[type]={};if(!d[type][dk])d[type][dk]=[];d[type][dk].push(s);sl(d)}function delS(type,i){var d=gl(),k=tk();if(d[type]&&d[type][k]){d[type][k].splice(i,1);if(!d[type][k].length)delete d[type][k];sl(d)}}function getCfg(){return gl().config||cp(DEF.config)}function setCfg(c){var d=gl();d.config=c;sl(d)}function getDL(){return gl().deadlines||[]}function setDL(a){var d=gl();d.deadlines=a;sl(d)}function getSyl(){return gl().syllabus||{}}function setSyl(s){var d=gl();d.syllabus=s;sl(d)}function getRevs(){return gl().revisions||[]}function setRevs(r){var d=gl();d.revisions=r;sl(d)}function addRev(r){var d=gl();if(!d.revisions)d.revisions=[];d.revisions.push(r);sl(d)}
+var D=(function(){var SK='st3_d',GK='st3_g',TK='st3_t',GF='study_timer_v3.json';var DEF={config:{studySubjects:['General','Other'],workCategories:['General','Other'],knowledgeCategories:['General','Other'],theme:'dark',dailyGoals:{'default':6},effectiveMins:50,wakeTime:6,recurringTypes:['General','Other'],goalPresets:[]},deadlines:[],study:{},work:{},syllabus:{},revisions:[],recurring:[],recurringDone:{},knowledge:[]};function gl(){try{var d=JSON.parse(localStorage.getItem(SK));if(!d||!d.config)return cp(DEF);if(!d.revisions)d.revisions=[];return d}catch(e){return cp(DEF)}}function sl(d){localStorage.setItem(SK,JSON.stringify(d))}function cp(o){return JSON.parse(JSON.stringify(o))}function gid(){return localStorage.getItem(GK)||''}function sgid(v){localStorage.setItem(GK,v)}function tok(){return localStorage.getItem(TK)||''}function stok(v){localStorage.setItem(TK,v)}function cloud(){return !!(tok()&&gid())}function tk(d){d=d||new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}function getSess(t,dk){var d=gl();return(d[t]&&d[t][dk])||[]}function todayS(t){return getSess(t,tk())}function addS(type,dk,s){var d=gl();if(!d[type])d[type]={};if(!d[type][dk])d[type][dk]=[];d[type][dk].push(s);sl(d)}function delS(type,i){var d=gl(),k=tk();if(d[type]&&d[type][k]){d[type][k].splice(i,1);if(!d[type][k].length)delete d[type][k];sl(d)}}function getCfg(){return gl().config||cp(DEF.config)}function setCfg(c){var d=gl();d.config=c;sl(d)}function getDL(){return gl().deadlines||[]}function setDL(a){var d=gl();d.deadlines=a;sl(d)}function getSyl(){return gl().syllabus||{}}function setSyl(s){var d=gl();d.syllabus=s;sl(d)}function getRevs(){return gl().revisions||[]}function setRevs(r){var d=gl();d.revisions=r;sl(d)}function addRev(r){var d=gl();if(!d.revisions)d.revisions=[];d.revisions.push(r);sl(d)}
 function getRC(){return gl().recurring||[]}function setRC(r){var d=gl();d.recurring=r;sl(d)}function addRC(r){var d=gl();if(!d.recurring)d.recurring=[];d.recurring.push(r);sl(d)}
 /* ========== EXAM SYSTEM ========== */
 /* A profile saved before exams existed gets one exam with a neutral name; saved names are never changed */
@@ -58,19 +58,28 @@ function _syncStudySubjects(){
 function getRCDone(){return gl().recurringDone||{}}function setRCDone(x){var d=gl();d.recurringDone=x;sl(d)}function markRCDone(id){var d=gl(),today=tk();if(!d.recurringDone)d.recurringDone={};if(!d.recurringDone[today])d.recurringDone[today]=[];if(d.recurringDone[today].indexOf(id)===-1)d.recurringDone[today].push(id);sl(d)}
 /* Recursive todo list merge — deduplicates by id, merges children recursively */
 function _mergeTodoList(local,remote){var byId={};var order=[];local.forEach(function(it){byId[it.id]=cp(it);order.push(it.id)});remote.forEach(function(it){if(!byId[it.id]){byId[it.id]=cp(it);order.push(it.id)}else{var ex=byId[it.id];if(it.status==='done'&&ex.status!=='done'){ex.status='done';ex.completedAt=it.completedAt}if(it.children&&it.children.length){if(!ex.children)ex.children=[];ex.children=_mergeTodoList(ex.children,it.children)}}});return order.map(function(id){return byId[id]})}
-/* An untouched default (a fresh device, a never-customised copy) never replaces or mixes into saved values */
-function savedBeatsDefault(mine,theirs){
-  var str=JSON.stringify,d=DEF.config;
-  function freshExams(c){var e=c.exams;return !!e&&e.length===1&&e[0].name==='My exam'&&str(e[0].subjects)===str(d.studySubjects)}
-  if(freshExams(mine)&&!freshExams(theirs)&&(theirs.exams||str(theirs.studySubjects||d.studySubjects)!==str(d.studySubjects)))delete mine.exams;
-  else if(freshExams(theirs)&&!freshExams(mine)&&(mine.exams||str(mine.studySubjects||d.studySubjects)!==str(d.studySubjects)))delete theirs.exams;
-  ['studySubjects','workCategories','knowledgeCategories','recurringTypes','goalPresets'].forEach(function(k){
-    if(!theirs[k])return;
-    if(!mine[k]||str(mine[k])===str(d[k]))mine[k]=cp(theirs[k]);
-    else if(str(theirs[k])===str(d[k]))delete theirs[k];
-  });
+/* A copy that equals a freshly opened app has nothing of the person in it: the other copy wins whole. Else the two are merged. */
+function isFresh(d){
+  if(!d||!d.config)return false;
+  var c=cp(d),e=c.config.exams;
+  if(e){if(e.length!==1||e[0].name!=='My exam'||Object.keys(e[0]).length!==3||JSON.stringify(e[0].subjects)!==JSON.stringify(DEF.config.studySubjects))return false;delete c.config.exams}
+  return JSON.stringify(c)===JSON.stringify(DEF);
 }
-function merge(a,b){var m=cp(a);if(b.config){b=cp(b);savedBeatsDefault(m.config,b.config);if(b.config.studySubjects)m.config.studySubjects=Array.from(new Set((m.config.studySubjects||[]).concat(b.config.studySubjects)));
+function merge(a,b){
+  if(isFresh(b))return cp(a);
+  if(isFresh(a)&&b&&b.config){
+    var w=cp(b);
+    Object.keys(DEF).forEach(function(k){if(w[k]===undefined)w[k]=cp(DEF[k])});
+    Object.keys(DEF.config).forEach(function(k){if(w.config[k]===undefined)w.config[k]=cp(DEF.config[k])});
+    return w;
+  }
+  var m=mergeSaved(a,b),p=b.config&&b.config.goalPresets;
+  if(p&&p.length&&!(m.config.goalPresets||[]).length)m.config.goalPresets=cp(p);
+  return m;
+}
+/* what an edit list offers: the configured values plus every value a record already uses */
+function withUsed(list,used){return Array.from(new Set(list.concat(used.filter(Boolean))))}
+function mergeSaved(a,b){var m=cp(a);if(b.config){if(b.config.studySubjects)m.config.studySubjects=Array.from(new Set((m.config.studySubjects||[]).concat(b.config.studySubjects)));
 /* Merge exams — deduplicate by id */
 if(b.config.exams){if(!m.config.exams)m.config.exams=[];var eIds=new Set(m.config.exams.map(function(e){return e.id}));b.config.exams.forEach(function(e){if(!eIds.has(e.id)){m.config.exams.push(e)}else{var existing=m.config.exams.find(function(x){return x.id===e.id});if(existing)existing.subjects=Array.from(new Set((existing.subjects||[]).concat(e.subjects||[])))}})}if(b.config.workCategories)m.config.workCategories=Array.from(new Set((m.config.workCategories||[]).concat(b.config.workCategories)));if(b.config.dailyGoals)Object.assign(m.config.dailyGoals||(m.config.dailyGoals={}),b.config.dailyGoals);
 if(b.config.wakeTime!==undefined)m.config.wakeTime=b.config.wakeTime;if(b.config.bedtime!==undefined)m.config.bedtime=b.config.bedtime;if(b.config.effectiveMins!==undefined)m.config.effectiveMins=b.config.effectiveMins;
@@ -130,4 +139,4 @@ function getBedForDate(dk){
   if(cfg.dailyBed&&cfg.dailyBed[dk]!==undefined)return cfg.dailyBed[dk];
   return cfg.bedtime||21.5;
 }
-return{getLocal:gl,saveLocal:sl,todayKey:tk,getSess:getSess,todayS:todayS,addSession:addS,deleteSession:delS,getCfg:getCfg,setCfg:setCfg,getDL:getDL,setDL:setDL,getSyl:getSyl,setSyl:setSyl,getRevs:getRevs,setRevs:setRevs,addRev:addRev,getRC:getRC,setRC:setRC,addRC:addRC,getRCDone:getRCDone,setRCDone:setRCDone,markRCDone:markRCDone,getGistId:gid,setGistId:sgid,setToken:stok,getToken:tok,isCloud:cloud,autoConn:autoConn,sync:sync,push:push,validate:validate,makeG:makeG,exportJSON:exportJSON,trigImp:trigImp,doImp:doImp,clearAll:clearAll,disc:disc,getGoalForDate:getGoalForDate,getWakeForDate:getWakeForDate,getBedForDate:getBedForDate,getExams:getExams,setExams:setExams,getAllSubjects:getAllSubjects,getExamForSubject:getExamForSubject,addExam:addExam,removeExam:removeExam,addSubjectToExam:addSubjectToExam,removeSubjectFromExam:removeSubjectFromExam}})();
+return{getLocal:gl,withUsed:withUsed,saveLocal:sl,todayKey:tk,getSess:getSess,todayS:todayS,addSession:addS,deleteSession:delS,getCfg:getCfg,setCfg:setCfg,getDL:getDL,setDL:setDL,getSyl:getSyl,setSyl:setSyl,getRevs:getRevs,setRevs:setRevs,addRev:addRev,getRC:getRC,setRC:setRC,addRC:addRC,getRCDone:getRCDone,setRCDone:setRCDone,markRCDone:markRCDone,getGistId:gid,setGistId:sgid,setToken:stok,getToken:tok,isCloud:cloud,autoConn:autoConn,sync:sync,push:push,validate:validate,makeG:makeG,exportJSON:exportJSON,trigImp:trigImp,doImp:doImp,clearAll:clearAll,disc:disc,getGoalForDate:getGoalForDate,getWakeForDate:getWakeForDate,getBedForDate:getBedForDate,getExams:getExams,setExams:setExams,getAllSubjects:getAllSubjects,getExamForSubject:getExamForSubject,addExam:addExam,removeExam:removeExam,addSubjectToExam:addSubjectToExam,removeSubjectFromExam:removeSubjectFromExam}})();

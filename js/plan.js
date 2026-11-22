@@ -301,9 +301,7 @@ var PLAN=(function(){
   }
 
   /* ========== GOAL PRESETS (Rule-based daily goals) ========== */
-  var _defaultPresets=[
-    {id:'preset-study-day',name:'Study day',hours:6,dayRules:[],active:false}
-  ];
+  var _defaultPresets=[];
   var _dayNames=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 
   function _getPresets(){

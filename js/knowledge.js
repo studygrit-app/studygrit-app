@@ -9,7 +9,7 @@ var KNOW=(function(){
   /* ── Data helpers ── */
   function getEntries(){return D.getLocal().knowledge||[]}
   function setEntries(arr){var d=D.getLocal();d.knowledge=arr;D.saveLocal(d)}
-  function getCategories(){return D.getCfg().knowledgeCategories||['General','Other']}
+  function getCategories(){return D.withUsed(D.getCfg().knowledgeCategories||['General','Other'],getEntries().map(function(e){return e.category}))}
 
   /* ── Init ── */
   function init(){
