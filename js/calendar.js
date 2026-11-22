@@ -623,7 +623,7 @@ var CAL=(function(){
       /* knowledge */
       if(lblEl)lblEl.textContent='Category';
       var opts='<option value="">Select...</option>';
-      (cfg.knowledgeCategories||['Health & Fitness','Current Affairs','Technology','Finance','Life Skills','Other']).forEach(function(c){opts+='<option>'+esc(c)+'</option>'});
+      (cfg.knowledgeCategories||['General','Other']).forEach(function(c){opts+='<option>'+esc(c)+'</option>'});
       subjEl.innerHTML=opts;
       if(topicEl)topicEl.placeholder='What did you learn?';
     }

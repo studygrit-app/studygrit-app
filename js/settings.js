@@ -33,7 +33,7 @@ if(diff>0&&diff<7&&hr===8&&min<5&&!sent['dld_'+dl.id+'_'+today]){fire('🔥 '+di
 if(diff===0&&hr>=8&&!sent['dl0_'+dl.id+'_'+today]){fire('🚨 Due TODAY',dl.title+' is due today!');sent['dl0_'+dl.id+'_'+today]=1}
 });
 // [6] End-of-day journal reminder — fires 30 min before bedtime
-var bedtime=D.getBedForDate(D.todayKey())||D.getCfg().bedtime||24;
+var bedtime=D.getBedForDate(D.todayKey())||D.getCfg().bedtime||21.5;
 if(hr===(bedtime-1>=0?bedtime-1:23)&&min>=30&&min<35&&!sent.journal){
   var jrnl=D.getLocal().journal||{};
   if(!jrnl[today]||(!jrnl[today].rating&&!jrnl[today].mood)){

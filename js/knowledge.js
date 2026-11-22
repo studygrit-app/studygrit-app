@@ -9,7 +9,7 @@ var KNOW=(function(){
   /* ── Data helpers ── */
   function getEntries(){return D.getLocal().knowledge||[]}
   function setEntries(arr){var d=D.getLocal();d.knowledge=arr;D.saveLocal(d)}
-  function getCategories(){return D.getCfg().knowledgeCategories||['Health & Fitness','Current Affairs','Technology','Finance','Life Skills','Other']}
+  function getCategories(){return D.getCfg().knowledgeCategories||['General','Other']}
 
   /* ── Init ── */
   function init(){
@@ -376,11 +376,7 @@ var KNOW=(function(){
   }
 
   /* ── Category color helper ── */
-  var _catColors={
-    'Health & Fitness':'var(--grn)','Current Affairs':'var(--acc)',
-    'Technology':'var(--cyn)','Finance':'var(--yel)',
-    'Life Skills':'var(--pur)','Other':'var(--td)'
-  };
+  var _catColors={'General':'var(--grn)','Other':'var(--td)'};
   function _catColor(cat){
     if(_catColors[cat])return _catColors[cat];
     /* Hash-based fallback */

@@ -86,7 +86,7 @@ var SUM=(function(){
     var h='<div class="summary-card"><h4>📝 Daily Journal</h4>';
     h+='<div class="df" style="margin-bottom:6px"><span class="df-lbl">Day Type</span>';
     h+='<select class="cat-sel" id="sumDayType" onchange="SUM.saveJournal()" style="flex:1">';
-    ['Office','WFH','Even Sat','Odd Sat','Sunday','Leave','Holiday'].forEach(function(t){
+    ['Normal','Busy','Light','Rest','Other'].concat(entry.dayType&&['Normal','Busy','Light','Rest','Other'].indexOf(entry.dayType)===-1?[entry.dayType]:[]).forEach(function(t){
       h+='<option'+(entry.dayType===t?' selected':'')+'>'+t+'</option>';
     });
     h+='</select></div>';
