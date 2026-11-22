@@ -32,7 +32,7 @@ if(studyEl){
     sh+='</div>';
     sh+='<div class="manage-list" id="ml-exam-'+ex.id+'" data-type="Study" data-exam="'+ex.id+'">';
     (ex.subjects||[]).forEach(function(s,i){
-      sh+='<span class="manage-tag" data-idx="'+i+'" data-name="'+esc(s)+'"><span class="drag-handle">☰</span>'+esc(s)+'<button class="manage-x" onclick="event.stopPropagation();App.rmSubjectFromExam(\''+ex.id+'\',\''+esc(s).replace(/'/g,"\\'")+'\')">✕</button></span>';
+      sh+='<span class="manage-tag" data-idx="'+i+'" data-name="'+esc(s)+'"><span class="drag-handle">☰</span>'+esc(s)+'<button class="manage-x" onclick="event.stopPropagation();App.rmSubjectFromExam(\''+ex.id+'\',\''+escArg(s)+'\')">✕</button></span>';
     });
     sh+='</div>';
     sh+='<div style="display:flex;gap:4px;margin-top:4px"><input type="text" class="inp" id="addSubjExam_'+ex.id+'" placeholder="New subject..." style="flex:1;font-size:.72rem;padding:5px 8px"><button class="b b-xs b-acc" onclick="App.addSubjectToExam(\''+ex.id+'\')">+ Add</button></div>';
@@ -46,11 +46,11 @@ if(studyEl){
 /* Work categories — unchanged */
 var workEl=document.getElementById('mngWork');
 if(workEl){
-  workEl.innerHTML='<div class="manage-list" id="ml-Work" data-type="Work">'+cfg.workCategories.map(function(s,i){return'<span class="manage-tag" data-idx="'+i+'" data-name="'+esc(s)+'"><span class="drag-handle">☰</span>'+esc(s)+'<button class="manage-x" onclick="event.stopPropagation();App.rmCat(\'work\',\''+esc(s).replace(/'/g,"\\'")+'\')">✕</button></span>'}).join('')+'</div>';
+  workEl.innerHTML='<div class="manage-list" id="ml-Work" data-type="Work">'+cfg.workCategories.map(function(s,i){return'<span class="manage-tag" data-idx="'+i+'" data-name="'+esc(s)+'"><span class="drag-handle">☰</span>'+esc(s)+'<button class="manage-x" onclick="event.stopPropagation();App.rmCat(\'work\',\''+escArg(s)+'\')">✕</button></span>'}).join('')+'</div>';
   DRAG.init('ml-Work');
 }
 /* Knowledge categories */
-var knEl=document.getElementById('mngKnowledge');if(knEl){var knCats=cfg.knowledgeCategories||[];knEl.innerHTML='<div class="manage-list" id="ml-Knowledge" data-type="Knowledge">'+knCats.map(function(s,i){return'<span class="manage-tag" data-idx="'+i+'" data-name="'+esc(s)+'">'+esc(s)+'<button class="manage-x" onclick="event.stopPropagation();App.rmCat(\'knowledge\',\''+esc(s).replace(/'/g,"\\'")+'\')">✕</button></span>'}).join('')+'</div>'}}
+var knEl=document.getElementById('mngKnowledge');if(knEl){var knCats=cfg.knowledgeCategories||[];knEl.innerHTML='<div class="manage-list" id="ml-Knowledge" data-type="Knowledge">'+knCats.map(function(s,i){return'<span class="manage-tag" data-idx="'+i+'" data-name="'+esc(s)+'">'+esc(s)+'<button class="manage-x" onclick="event.stopPropagation();App.rmCat(\'knowledge\',\''+escArg(s)+'\')">✕</button></span>'}).join('')+'</div>'}}
 function renderAll(){fillDD();renderGoal();['study','work'].forEach(function(t){renderStats(t);renderCB(t,D.todayS(t),'cb-'+t);renderWC(t);renderSessions(t);renderHistory(t)});renderManage();SYL.renderAll();REV.render();DL.render();REM.render();RECUR.render()}
 function tog(id){document.getElementById('sec'+id).classList.toggle('hidden');document.getElementById('tog'+id).classList.toggle('open')}
 function toast(msg){var el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(function(){el.classList.remove('show')},2500)}

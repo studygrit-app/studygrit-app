@@ -1,0 +1,72 @@
+{
+  "config": {
+    "studySubjects": ["Alpha", "Beta", "Gamma"],
+    "workCategories": ["Workone", "Worktwo"],
+    "knowledgeCategories": ["Knowone"],
+    "recurringTypes": ["Typeone"],
+    "exams": [
+      {"id": "exam_1700000000000", "name": "Examone", "subjects": ["Alpha", "Beta"]},
+      {"id": "exam_1700000000001", "name": "Examtwo", "subjects": ["Gamma"]}
+    ],
+    "dailyGoals": {"default": 5, "@T": 4.5},
+    "wakeTime": 1,
+    "bedtime": 24,
+    "effectiveMins": 55,
+    "dailyWake": {"@T": 0.5},
+    "dailyBed": {"@T": 23.75},
+    "goalPresets": [{"id": "gp_1700000000000", "name": "Ruleone", "hours": 3, "dayRules": [{"day": 0, "pattern": "all"}, {"day": 1, "pattern": "odd"}], "active": true}]
+  },
+  "deadlines": [
+    {"id": "dl_1700000000000", "type": "personal", "title": "Deadone", "date": "@YT06:00:00.000Z"},
+    {"id": "dl_1700000000001", "type": "study", "title": "Deadtwo", "date": "@TT23:30:00.000Z"}
+  ],
+  "revisions": [
+    {"id": "rev_1700000000000_ab1c", "subj": "Alpha", "topic": "Revone", "diff": "easy", "created": "@Y", "revCount": 1, "history": [{"date": "@Y", "diff": "easy", "type": "learned"}], "nextDate": "@Y", "active": true},
+    {"id": "rev_1700000000001_de2f", "subj": "Alpha", "topic": "Revtwo", "diff": "hard", "created": "@Y", "revCount": 0, "history": [], "nextDate": "@T", "active": true}
+  ],
+  "recurring": [
+    {"id": "rc_1700000000000", "title": "Repone", "rcType": "Typeone", "time": "08:00", "active": true, "pattern": "daily"},
+    {"id": "rc_1700000000001", "title": "Reptwo", "rcType": "Typeone", "time": "", "active": true, "pattern": "specific", "days": [0, 1, 2, 3, 4, 5, 6]},
+    {"id": "rc_1700000000002", "title": "Repthree", "rcType": "Typeone", "time": "09:15", "active": true, "pattern": "fortnightly", "startDate": "@T"},
+    {"id": "rc_1700000000003", "title": "Repfour", "rcType": "Typeone", "time": "10:00", "active": true, "pattern": "monthly", "monthDay": 3},
+    {"id": "rc_1700000000004", "title": "Repfive", "rcType": "Typeone", "time": "11:00", "active": false, "pattern": "yearly", "yearMonth": 2, "yearDay": 9}
+  ],
+  "knowledge": [
+    {"id": "kn_1700000000000_ab1c", "date": "@T", "category": "Knowone", "topic": "Factone", "duration": 25, "source": "https://example.com/a", "notes": "Factnote", "createdAt": "@TT01:00:00.000Z"},
+    {"id": "kn_1700000000001_de2f", "date": "@Y", "category": "Knowone", "topic": "Facttwo", "duration": 0, "source": "", "notes": "", "createdAt": "@YT01:00:00.000Z"}
+  ],
+  "syllabus": {"Alpha": {"total": 6, "done": 2}, "Beta": {"total": 4, "done": 0}},
+  "study": {
+    "@T": [
+      {"cat": "Alpha", "dur": 3600, "start": "@TT04:00:00.000Z", "end": "@TT05:00:00.000Z", "note": "Sessone", "diff": "medium", "source": "Booksource", "planId": "pl_1700000000000_ab1"},
+      {"cat": "Beta", "dur": 1800, "start": "@TT06:00:00.000Z", "end": "@TT06:30:00.000Z", "note": "Sesstwo", "diff": "hard"},
+      {"cat": "Gamma", "dur": 900, "start": "@TT07:00:00.000Z", "end": "@TT07:15:00.000Z", "note": "Sessthree", "diff": "easy"}
+    ],
+    "@Y": [{"cat": "Alpha", "dur": 600, "start": "@YT04:00:00.000Z", "end": "@YT04:10:00.000Z", "note": "Sessfour", "diff": "easy"}]
+  },
+  "work": {
+    "@T": [{"cat": "Workone", "dur": 1200, "start": "@TT08:00:00.000Z", "end": "@TT08:20:00.000Z", "note": "Workdone", "diff": "hard"}],
+    "@Y": [{"cat": "Worktwo", "dur": 1200, "start": "@YT08:00:00.000Z", "end": "@YT08:20:00.000Z", "note": "", "diff": "hard"}]
+  },
+  "plans": {
+    "@T": [
+      {"id": "pl_1700000000000_ab1", "subject": "Alpha", "planFor": "study", "type": "lecture", "topic": "Planone", "source": "https://example.com/b", "estHours": 1.5, "priority": "critical", "lecNum": 3, "status": "planned", "notes": "Plannote", "actualSecs": 600, "startTime": "04:00", "endTime": "25:00", "createdAt": "@YT01:00:00.000Z", "sortOrder": 0},
+      {"id": "pl_1700000000001_cd2", "subject": "Alpha", "planFor": "study", "type": "revision", "topic": "Plantwo", "source": "", "estHours": 2, "priority": "low", "lecNum": null, "status": "planned", "notes": "", "actualSecs": 0, "startTime": null, "endTime": null, "createdAt": "@YT01:00:00.000Z", "sortOrder": 1},
+      {"id": "pl_1700000000002_ef3_0", "subject": "Workone", "planFor": "work", "type": "topic", "topic": "Planthree", "source": "", "estHours": 1, "priority": "medium", "lecNum": null, "status": "completed", "notes": "", "actualSecs": 0, "createdAt": "@YT01:00:00.000Z"}
+    ],
+    "@Y": [{"id": "pl_1700000000003_gh4", "subject": "Beta", "planFor": "study", "type": "practice", "topic": "Planfour", "source": "", "estHours": 1, "priority": "high", "lecNum": null, "status": "in-progress", "notes": "", "actualSecs": 0, "createdAt": "@YT01:00:00.000Z"}]
+  },
+  "todos": {
+    "study": [
+      {"id": "td_1700000000000_ab1", "title": "Todoone", "type": "todo", "priority": "critical", "due": "@T", "content": "", "status": "pending", "createdAt": "@Y", "repeat": "weekly", "estMins": 30, "children": [
+        {"id": "td_1700000000001_cd2", "title": "Todochild", "type": "todo", "priority": "low", "due": "@T", "content": "", "status": "pending", "createdAt": "@Y", "repeat": "", "estMins": 10, "children": []}
+      ]},
+      {"id": "td_1700000000002_ef3", "title": "Todonote", "type": "note", "priority": "medium", "due": "", "content": "Notebody", "status": "pending", "createdAt": "@Y", "repeat": "", "children": []}
+    ],
+    "work": [{"id": "td_1700000000003_gh4", "title": "Tododone", "type": "todo", "priority": "high", "due": "@Y", "content": "", "status": "done", "completedAt": "@YT09:00:00.000Z", "createdAt": "@Y", "repeat": "", "children": []}]
+  },
+  "journal": {
+    "@T": {"rating": 4, "mood": "😊", "dayType": "Busy", "wentRight": "Rightone", "wentWrong": "Wrongone", "notes": "Journalnote", "tags": ["focused"]},
+    "@Y": {"rating": 2, "mood": "😞", "dayType": "Normal"}
+  }
+}

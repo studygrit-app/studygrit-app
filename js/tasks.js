@@ -122,7 +122,7 @@ function addType(){var v=document.getElementById('rcNewType').value.trim();if(!v
 function removeType(t){if(!confirm('Remove type "'+t+'"?'))return;var cfg=D.getCfg();cfg.recurringTypes=cfg.recurringTypes.filter(function(x){return x!==t});D.setCfg(cfg);render();D.push()}
 function render(){var cfg=D.getCfg(),types=cfg.recurringTypes||['General','Other'];
 // Type list
-document.getElementById('rcTypeList').innerHTML='<div class="manage-list">'+types.map(function(t){return'<span class="manage-tag" style="cursor:default">'+esc(t)+'<button class="manage-x" onclick="RECUR.removeType(\''+esc(t)+'\')">✕</button></span>'}).join('')+'</div>';
+document.getElementById('rcTypeList').innerHTML='<div class="manage-list">'+types.map(function(t){return'<span class="manage-tag" style="cursor:default">'+esc(t)+'<button class="manage-x" onclick="RECUR.removeType(\''+escArg(t)+'\')">✕</button></span>'}).join('')+'</div>';
 // Fill dropdowns
 fillTypeDD('rcType');var filter=document.getElementById('rcFilter');var fv=filter.value;filter.innerHTML='<option value="">All Types</option>'+types.map(function(t){return'<option'+(t===fv?' selected':'')+'>'+esc(t)+'</option>'}).join('');
 // Pattern opts init

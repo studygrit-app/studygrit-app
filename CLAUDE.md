@@ -7,9 +7,9 @@
 
 ## Hosting
 
-- Intended for **GitHub Pages** from the `main` branch. As of 2026-07-11
-  Pages is NOT enabled (URL 404s) - enable via repo Settings → Pages →
-  main / root. Expected URL: `https://studygrit-app.github.io/studygrit-app/`
+- **GitHub Pages is ON and serves `main` / root** (checked 2026-11-22):
+  `https://studygrit-app.github.io/studygrit-app/`. A push to `main` is a release.
+- `privacy.html` there is registered with Google: never move or change it as a side effect.
 - All file paths must be **relative** (e.g., `css/base.css`, `js/app.js`, `./index.html`)
 - Never use absolute paths like `/css/base.css` - GitHub Pages serves from a subdirectory (the repo name), so root-relative paths will break
 - `index.html` is the single entry point; there is no server-side routing
@@ -86,6 +86,9 @@ Scripts load synchronously in index.html in this exact order. Dependencies flow 
 
 - `goalPresets[]` - rule-based daily goals with per-day week patterns
 - `todos{study:[], work:[]}` - nested to-do lists with unlimited children
+- An import (file or Gist) keeps only what `safeBackup` in `js/data.js` allows: add every new field there
+- Draw stored text with `esc()`; inside an inline handler's quoted string use `escArg()`
+- Security tests: `node .tests/import-allowlist.test.mjs` and `python -I .tests/planted-backup.py`
 - `plans{dateKey:[]}` - daily study plans with subject, topic, estimated/actual hours
 - `journal{dateKey:{}}` - daily journal entries (rating, mood, notes)
 - `recurring[]` + `recurringDone{}` - recurring tasks with completion tracking

@@ -1,6 +1,8 @@
 /* Data layer extracted from V2 project */
 /* HTML escape helper — prevents XSS when rendering user input */
 function esc(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
+/* text inside a quoted string of an inline handler: esc() alone is not enough, the browser decodes it before the code runs */
+function escArg(s){return esc(String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\r/g,'\\r').replace(/\n/g,'\\n'))}
 var QUOTES=["Small steps add up.","Start with one task.","Focus on what is in front of you.","Consistency beats intensity.","Progress, not perfection."];
 
 var D=(function(){var SK='st3_d',GK='st3_g',TK='st3_t',GF='study_timer_v3.json';var DEF={config:{studySubjects:['General','Other'],workCategories:['General','Other'],knowledgeCategories:['General','Other'],theme:'dark',dailyGoals:{'default':6},effectiveMins:50,wakeTime:6,recurringTypes:['General','Other'],goalPresets:[]},deadlines:[],study:{},work:{},syllabus:{},revisions:[],recurring:[],recurringDone:{},knowledge:[]};function gl(){try{var d=JSON.parse(localStorage.getItem(SK));if(!d||!d.config)return cp(DEF);if(!d.revisions)d.revisions=[];return d}catch(e){return cp(DEF)}}function sl(d){localStorage.setItem(SK,JSON.stringify(d))}function cp(o){return JSON.parse(JSON.stringify(o))}function gid(){return localStorage.getItem(GK)||''}function sgid(v){localStorage.setItem(GK,v)}function tok(){return localStorage.getItem(TK)||''}function stok(v){localStorage.setItem(TK,v)}function cloud(){return !!(tok()&&gid())}function tk(d){d=d||new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}function getSess(t,dk){var d=gl();return(d[t]&&d[t][dk])||[]}function todayS(t){return getSess(t,tk())}function addS(type,dk,s){var d=gl();if(!d[type])d[type]={};if(!d[type][dk])d[type][dk]=[];d[type][dk].push(s);sl(d)}function delS(type,i){var d=gl(),k=tk();if(d[type]&&d[type][k]){d[type][k].splice(i,1);if(!d[type][k].length)delete d[type][k];sl(d)}}function getCfg(){return gl().config||cp(DEF.config)}function setCfg(c){var d=gl();d.config=c;sl(d)}function getDL(){return gl().deadlines||[]}function setDL(a){var d=gl();d.deadlines=a;sl(d)}function getSyl(){return gl().syllabus||{}}function setSyl(s){var d=gl();d.syllabus=s;sl(d)}function getRevs(){return gl().revisions||[]}function setRevs(r){var d=gl();d.revisions=r;sl(d)}function addRev(r){var d=gl();if(!d.revisions)d.revisions=[];d.revisions.push(r);sl(d)}
@@ -67,6 +69,7 @@ function isFresh(d){
 }
 function merge(a,b){
   if(isFresh(b))return cp(a);
+  b=safeBackup(b);
   var lists=['studySubjects','workCategories','knowledgeCategories','recurringTypes'],fresh=isFresh(a),start=a;
   /* a fresh app starts empty: it gets exactly the fields a merge carries, never an unknown field of the other file */
   if(fresh){start=cp(DEF);lists.forEach(function(k){start.config[k]=[]})}
@@ -86,6 +89,88 @@ function safePresets(list){
   });
   return out;
 }
+/* An imported backup (file or Gist) is rebuilt from this allowlist, because the page stores a token and draws these
+   values into HTML and click handlers. Ids, dates, times, numbers and choices must have their own shape. Free text
+   stays as typed and is escaped where it is drawn. A field added to the data model must be added here too. */
+var safeBackup=(function(){
+  function own(o,k){return Object.prototype.hasOwnProperty.call(o,k)}
+  function plain(v){return !!v&&typeof v==='object'&&!Array.isArray(v)}
+  function builtIn(s){return s in Object.prototype}
+  function text(v){return typeof v==='string'?v:typeof v==='number'&&isFinite(v)?String(v):''}
+  /* a name is also used as an object key, so it cannot be constructor, __proto__ and the like */
+  function name(v){var s=text(v);return builtIn(s)?s+'_':s}
+  /* the same bad id always becomes the same good one, so links and a second import still match */
+  function id(v){
+    if(typeof v==='number'&&Number.isSafeInteger(v))return v;
+    if(typeof v==='string'&&/^[A-Za-z0-9_-]{1,128}$/.test(v)&&!builtIn(v))return v;
+    var s=String(JSON.stringify(v)),h=0;
+    for(var i=0;i<s.length;i++)h=(Math.imul(h,31)+s.charCodeAt(i))>>>0;
+    return 'imported_'+h.toString(36);
+  }
+  function num(min,max,fallback){return function(v){
+    if(v===null)return null;
+    var n=typeof v==='number'?v:typeof v==='string'&&/^-?\d+(\.\d+)?$/.test(v)?Number(v):NaN;
+    return isFinite(n)?Math.min(max,Math.max(min,n)):fallback;
+  }}
+  function one(choices,fallback){return function(v){return choices.indexOf(v)!==-1?v:fallback}}
+  function flag(v){return typeof v==='boolean'?v:true}
+  var DAY=/^\d{4}-\d\d-\d\d$/,CLOCK=/^\d{1,3}:\d\d(:\d\d)?$/,ISO=/^\d{4}-\d\d-\d\d(T\d\d:\d\d(:\d\d(\.\d{1,6})?)?(Z|[+-]\d\d:?\d\d)?)?$/;
+  function shaped(re){return function(v){return typeof v==='string'&&re.test(v)?v:''}}
+  var date=shaped(DAY),time=shaped(CLOCK),iso=shaped(ISO);
+  function moment(v){return typeof v==='number'&&isFinite(v)?v:iso(v)}
+  function optTime(v){return v===null?null:time(v)}
+  function list(check,fallback){return function(v){
+    if(!Array.isArray(v))return fallback?[]:undefined;
+    return v.map(check).filter(function(x){return x!==undefined});
+  }}
+  function record(fields){return function(v){
+    if(!plain(v))return undefined;
+    var out={};
+    Object.keys(v).forEach(function(k){if(own(fields,k)){var x=fields[k](v[k]);if(x!==undefined)out[k]=x}});
+    return out;
+  }}
+  function map(key,check){return function(v){
+    if(!plain(v))return undefined;
+    var out={};
+    Object.keys(v).forEach(function(k){var safe=key(k);if(safe!==undefined){var x=check(v[k]);if(x!==undefined)out[safe]=x}});
+    return out;
+  }}
+  function day(k){return DAY.test(k)?k:undefined}
+  function goalDay(k){return k==='default'?k:day(k)}
+
+  var diff=one(['easy','medium','hard',''],''),priority=one(['critical','high','medium','low',''],'medium');
+  var names=list(name),hours=num(0,1e6,0),secs=num(0,1e9,0),clock=num(0,48);
+  var sessions=map(day,list(record({cat:name,dur:secs,start:moment,end:moment,note:text,diff:diff,source:text,planId:id})));
+  var todoFields={id:id,title:text,type:one(['todo','note',''],'todo'),priority:priority,due:date,content:text,
+    status:one(['pending','done'],'pending'),completedAt:moment,createdAt:moment,repeat:one(['daily','weekly','monthly',''],''),
+    estMins:num(0,1e7,0)};
+  var todo=record(todoFields);
+  todoFields.children=list(todo,true);
+  var backup=record({
+    config:record({studySubjects:names,workCategories:names,knowledgeCategories:names,recurringTypes:names,
+      exams:list(record({id:id,name:text,subjects:list(name,true)})),
+      dailyGoals:map(goalDay,num(0,1e6)),wakeTime:clock,bedtime:clock,effectiveMins:num(0,1440),
+      dailyWake:map(day,clock),dailyBed:map(day,clock),goalPresets:safePresets}),
+    deadlines:list(record({id:id,type:one(['study','work','personal',''],''),title:text,date:moment})),
+    revisions:list(record({id:id,subj:name,topic:text,diff:diff,created:date,revCount:num(0,1e6,0),
+      history:list(record({date:date,diff:diff,type:text}),true),nextDate:date,active:flag})),
+    recurring:list(record({id:id,title:text,rcType:name,time:time,active:flag,
+      pattern:one(['daily','weekly','specific','fortnightly','monthly','yearly'],''),
+      days:list(one([0,1,2,3,4,5,6]),true),monthDay:num(1,31,1),yearMonth:num(1,12,1),yearDay:num(1,31,1),startDate:date})),
+    knowledge:list(record({id:id,date:date,category:name,topic:text,duration:secs,source:text,notes:text,createdAt:iso})),
+    syllabus:map(name,record({total:num(0,5000,0),done:num(0,5000,0)})),
+    study:sessions,
+    work:sessions,
+    plans:map(day,list(record({id:id,subject:name,planFor:one(['study','work',''],'study'),
+      type:one(['topic','lecture','revision','practice','other',''],'other'),topic:text,source:text,estHours:hours,
+      priority:priority,lecNum:num(0,1e5,null),status:one(['planned','in-progress','completed','skipped','carried'],'planned'),
+      notes:text,actualSecs:secs,startTime:optTime,endTime:optTime,createdAt:moment,sortOrder:num(0,1e6,0)}))),
+    todos:record({study:list(todo),work:list(todo)}),
+    journal:map(day,record({rating:num(0,5,0),mood:one(['😤','😞','😐','😊','🤩',''],''),dayType:text,
+      wentRight:text,wentWrong:text,notes:text,tags:list(name,true)}))
+  });
+  return function(v){if(!plain(v))throw new TypeError('not a backup');return backup(v)};
+})();
 /* what an edit list offers: the configured values plus every value a record already uses */
 function withUsed(list,used){return Array.from(new Set(list.concat(used.filter(Boolean))))}
 function mergeSaved(a,b){var m=cp(a);if(b.config){if(b.config.studySubjects)m.config.studySubjects=Array.from(new Set((m.config.studySubjects||[]).concat(b.config.studySubjects)));

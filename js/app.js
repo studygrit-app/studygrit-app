@@ -17,7 +17,7 @@ function init(){var _dn=['Sunday','Monday','Tuesday','Wednesday','Thursday','Fri
 var wCats=cfg.workCategories;
 /* Study dropdown uses exam-grouped subjects */
 document.getElementById('studyCat').innerHTML=UI.examSubjectOptions(null,false).replace('<option value="">Select...</option>','');
-document.getElementById('workCat').innerHTML=wCats.map(function(s){return'<option>'+s+'</option>'}).join('');
+document.getElementById('workCat').innerHTML=wCats.map(function(s){return'<option>'+esc(s)+'</option>'}).join('');
 document.getElementById('sylSubj').innerHTML=UI.examSubjectOptions(null,false);
 if(D.isCloud()){show('main');syncUI('busy');D.sync().then(function(){UI.renderAll();RP.renderHeatmap();DL.startTick();syncUI('on');gInfo();TM.recoverState()}).catch(function(){UI.renderAll();RP.renderHeatmap();DL.startTick();syncUI('err');gInfo();TM.recoverState()})}else if(D.getToken()){show('main');syncUI('busy');D.autoConn().then(function(){UI.renderAll();RP.renderHeatmap();DL.startTick();syncUI('on');gInfo();TM.recoverState()}).catch(function(){UI.renderAll();RP.renderHeatmap();DL.startTick();syncUI('err');gInfo();TM.recoverState()})}else{show('setup')}
 document.addEventListener('keydown',function(e){if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA'||e.target.tagName==='SELECT')return;if(e.key===' '||e.code==='Space'){e.preventDefault();var at=TM.activeType();if(at){var s=TM.getState(at);s.pau?TM.resume(at):TM.pause(at)}else{var ct=document.querySelector('.tp.on').id.replace('p-','');if(ct==='study')TM.start('study');else if(ct==='work')TM.start('work')}}if(e.key==='s'){var a=TM.activeType();if(a)TM.stop(a)}if(e.key==='D'&&e.shiftKey){var a2=TM.activeType();if(a2)TM.discard(a2)}if(e.key==='f')enterFocus();if(e.key==='t')toggleTheme();if(e.key==='Escape')exitFocus();if(e.key==='p')App.navTo('plan');if(e.key==='c')App.navTo('calendar');if(e.key==='d'&&!e.shiftKey)App.navTo('todo');if(e.key==='u')App.navTo('summary');if(e.key==='k')App.navTo('knowledge');if(e.key>='1'&&e.key<='8'){var tabs=['study','work','report','syl','rev','remind','recur','sett'];tab(tabs[parseInt(e.key)-1])}});
@@ -180,7 +180,7 @@ App.rmSubjectFromExam=function(examId,subject){if(!confirm('Remove "'+subject+'"
         var sel = document.getElementById('smFromPlan');
         sel.innerHTML = '<option value="">— New topic (not from plan) —</option>';
         plans.forEach(function(p){
-          sel.innerHTML += '<option value="'+p.id+'">'+p.topic+(p.lecNum?' (Lec #'+p.lecNum+')':'')+'</option>';
+          sel.innerHTML += '<option value="'+p.id+'">'+esc(p.topic)+(p.lecNum?' (Lec #'+p.lecNum+')':'')+'</option>';
         });
         var syl = D.getSyl();
         var smLecSection = document.getElementById('smLectureSection');
@@ -205,7 +205,7 @@ App.rmSubjectFromExam=function(examId,subject){if(!confirm('Remove "'+subject+'"
           var items = (todos[type] || []).filter(function(i){return i.status !== 'done' && (!i.due || i.due <= today)});
           todoSel.innerHTML = '<option value="">— None —</option>';
           items.slice(0, 15).forEach(function(t){
-            todoSel.innerHTML += '<option value="'+t.id+'">'+t.title+'</option>';
+            todoSel.innerHTML += '<option value="'+t.id+'">'+esc(t.title)+'</option>';
           });
         }
       }
@@ -358,7 +358,7 @@ App.rmSubjectFromExam=function(examId,subject){if(!confirm('Remove "'+subject+'"
         var actualH=(p.actualSecs||0)/3600;
         if(actualH>0)h+='<span class="study-plan-deadline" style="color:var(--grn)">'+actualH.toFixed(1)+'h done</span>';
         /* Start button for pending plans on today */
-        if(dk===today&&p.status==='planned')h+='<button class="b b-xs b-acc plan-start-btn" onclick="event.stopPropagation();App.startFromPlan(\''+type+'\',\''+esc(p.subject)+'\',\''+dk+'\',\''+p.id+'\')">▶ Start</button>';
+        if(dk===today&&p.status==='planned')h+='<button class="b b-xs b-acc plan-start-btn" onclick="event.stopPropagation();App.startFromPlan(\''+type+'\',\''+escArg(p.subject)+'\',\''+dk+'\',\''+p.id+'\')">▶ Start</button>';
         h+='</div>';
       });
     }

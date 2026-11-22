@@ -97,11 +97,11 @@ var SUM=(function(){
     moods.forEach(function(m){h+='<span class="mood-btn'+(entry.mood===m?' on':'')+'" onclick="SUM.setMood(\''+m+'\')">'+m+'</span>'});
     h+='</div></div>';
     h+='<div class="sl" style="margin:6px 0 4px;text-align:left">What Went Right</div>';
-    h+='<textarea class="note-inp" id="sumRight" onblur="SUM.saveJournal()" placeholder="Positive highlights...">'+(entry.wentRight||'')+'</textarea>';
+    h+='<textarea class="note-inp" id="sumRight" onblur="SUM.saveJournal()" placeholder="Positive highlights...">'+esc(entry.wentRight||'')+'</textarea>';
     h+='<div class="sl" style="margin:4px 0 4px;text-align:left">What Went Wrong</div>';
-    h+='<textarea class="note-inp" id="sumWrong" onblur="SUM.saveJournal()" placeholder="Areas to improve...">'+(entry.wentWrong||'')+'</textarea>';
+    h+='<textarea class="note-inp" id="sumWrong" onblur="SUM.saveJournal()" placeholder="Areas to improve...">'+esc(entry.wentWrong||'')+'</textarea>';
     h+='<div class="sl" style="margin:4px 0 4px;text-align:left">Notes / Triggers</div>';
-    h+='<textarea class="note-inp" id="sumNotes" onblur="SUM.saveJournal()" placeholder="Any notes...">'+(entry.notes||'')+'</textarea>';
+    h+='<textarea class="note-inp" id="sumNotes" onblur="SUM.saveJournal()" placeholder="Any notes...">'+esc(entry.notes||'')+'</textarea>';
     /* [7] Quick Journal Tags */
     var TAGS=['productive','distracted','tired','motivated','stressed','relaxed','focused','procrastinated','social','solo'];
     var selTags=entry.tags||[];

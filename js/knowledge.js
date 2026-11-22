@@ -266,7 +266,7 @@ var KNOW=(function(){
           var isCollapsed=collapsedCats[catKey];
           var totalDur=0;items.forEach(function(e){totalDur+=e.duration||0});
           var catColor=_catColor(cat);
-          h+='<div class="kn-cat-header" onclick="KNOW.toggleDateCatGroup(\''+catKey+'\')" style="border-left:3px solid '+catColor+'">';
+          h+='<div class="kn-cat-header" onclick="KNOW.toggleDateCatGroup(\''+escArg(catKey)+'\')" style="border-left:3px solid '+catColor+'">';
           h+='<span class="kn-cat-arrow'+(isCollapsed?'':' open')+'">▶</span>';
           h+='<span class="knowledge-cat-badge" style="background:'+catColor+'">'+esc(cat)+'</span>';
           h+='<span style="color:var(--td);font-size:.6rem;font-weight:600">'+items.length+' entries · '+Math.floor(totalDur/60)+'h '+((totalDur%60)||0)+'m</span>';

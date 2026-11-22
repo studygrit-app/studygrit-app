@@ -155,7 +155,7 @@ var CAL=(function(){
         plans.forEach(function(p){if(subjs.indexOf(p.subject)===-1&&subjs.length<2)subjs.push(p.subject)});
         var hint=plans.length+'p';
         if(doneCount>0)hint+=' \u00B7 '+doneCount+'\u2713';
-        h+='<div class="cal-plan-hint" title="'+subjs.join(', ')+(plans.length>2?' +more':'')+'">'+hint+'</div>';
+        h+='<div class="cal-plan-hint" title="'+subjs.map(esc).join(', ')+(plans.length>2?' +more':'')+'">'+hint+'</div>';
       }
 
       h+='</div>';

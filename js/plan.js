@@ -663,7 +663,7 @@ var PLAN=(function(){
       h+='<div style="display:flex;gap:3px">';
       if(p.status!=='completed')h+='<button class="b b-xs b-grn" onclick="PLAN.completePlan(\''+viewDate+'\',\''+p.id+'\')">✓</button>';
       var _pType=p.planFor||'study';
-      if(p.status==='planned')h+='<button class="b b-xs" onclick="App.startFromPlan(\''+_pType+'\',\''+esc(p.subject).replace(/'/g,"\\'")+'\',\''+viewDate+'\',\''+p.id+'\');App.navTo(\''+_pType+'\')" title="Start Timer">▶</button>';
+      if(p.status==='planned')h+='<button class="b b-xs" onclick="App.startFromPlan(\''+_pType+'\',\''+escArg(p.subject)+'\',\''+viewDate+'\',\''+p.id+'\');App.navTo(\''+_pType+'\')" title="Start Timer">▶</button>';
       h+='<button class="b b-xs" onclick="PLAN.openEdit(\''+viewDate+'\',\''+p.id+'\')">✏️</button>';
       h+='<button class="b b-xs b-danger" onclick="PLAN.remove(\''+viewDate+'\',\''+p.id+'\')">✕</button>';
       h+='</div></div>';
