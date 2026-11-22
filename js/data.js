@@ -67,15 +67,24 @@ function isFresh(d){
 }
 function merge(a,b){
   if(isFresh(b))return cp(a);
-  if(isFresh(a)&&b&&b.config){
-    var w=cp(b);
-    Object.keys(DEF).forEach(function(k){if(w[k]===undefined)w[k]=cp(DEF[k])});
-    Object.keys(DEF.config).forEach(function(k){if(w.config[k]===undefined)w.config[k]=cp(DEF.config[k])});
-    return w;
-  }
-  var m=mergeSaved(a,b),p=b.config&&b.config.goalPresets;
-  if(p&&p.length&&!(m.config.goalPresets||[]).length)m.config.goalPresets=cp(p);
+  var lists=['studySubjects','workCategories','knowledgeCategories','recurringTypes'],fresh=isFresh(a),start=a;
+  /* a fresh app starts empty: it gets exactly the fields a merge carries, never an unknown field of the other file */
+  if(fresh){start=cp(DEF);lists.forEach(function(k){start.config[k]=[]})}
+  var m=mergeSaved(start,b);
+  if(fresh)lists.forEach(function(k){if(!m.config[k].length)m.config[k]=cp(DEF.config[k])});
+  if(b.config&&!(m.config.goalPresets||[]).length){var p=safePresets(b.config.goalPresets);if(p.length)m.config.goalPresets=p}
   return m;
+}
+/* an imported schedule is drawn into the page: rebuilt from this shape only */
+function safePresets(list){
+  var ok=['all','even','odd'],out=[];
+  (Array.isArray(list)?list:[]).forEach(function(p){
+    if(!p||typeof p.id!=='string'||!/^[A-Za-z0-9_-]{1,64}$/.test(p.id)||typeof p.name!=='string')return;
+    var h=Number(p.hours);if(!isFinite(h)||h<0||h>24)return;
+    var rules=Array.isArray(p.dayRules)?p.dayRules:Array.isArray(p.days)?p.days.map(function(d){return{day:d,pattern:p.weekPattern||'all'}}):[];
+    out.push({id:p.id,name:p.name,hours:h,dayRules:rules.filter(function(r){return r&&[0,1,2,3,4,5,6].indexOf(r.day)!==-1&&ok.indexOf(r.pattern||'all')!==-1}).map(function(r){return{day:r.day,pattern:r.pattern||'all'}}),active:!!p.active});
+  });
+  return out;
 }
 /* what an edit list offers: the configured values plus every value a record already uses */
 function withUsed(list,used){return Array.from(new Set(list.concat(used.filter(Boolean))))}
