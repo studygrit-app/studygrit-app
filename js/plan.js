@@ -302,10 +302,7 @@ var PLAN=(function(){
 
   /* ========== GOAL PRESETS (Rule-based daily goals) ========== */
   var _defaultPresets=[
-    {id:'gp_office',name:'Office Day',hours:3,dayRules:[{day:1,pattern:'all'},{day:2,pattern:'all'},{day:3,pattern:'all'},{day:4,pattern:'all'},{day:5,pattern:'all'}],active:true},
-    {id:'gp_wfh',name:'WFH',hours:5.5,dayRules:[],active:false},
-    {id:'gp_evensat',name:'Even Saturday',hours:7,dayRules:[{day:6,pattern:'even'}],active:true},
-    {id:'gp_fullday',name:'Full Day',hours:13,dayRules:[{day:0,pattern:'all'},{day:6,pattern:'odd'}],active:true}
+    {id:'preset-study-day',name:'Study day',hours:6,dayRules:[],active:false}
   ];
   var _dayNames=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 
