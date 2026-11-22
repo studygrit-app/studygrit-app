@@ -80,7 +80,7 @@ function safePresets(list){
   var ok=['all','even','odd'],out=[];
   (Array.isArray(list)?list:[]).forEach(function(p){
     if(!p||typeof p.id!=='string'||!/^[A-Za-z0-9_-]{1,64}$/.test(p.id)||typeof p.name!=='string')return;
-    var h=Number(p.hours);if(!isFinite(h)||h<0||h>24)return;
+    var h=Number(p.hours);if(!isFinite(h)||h<0||h>999)return;
     var rules=Array.isArray(p.dayRules)?p.dayRules:Array.isArray(p.days)?p.days.map(function(d){return{day:d,pattern:p.weekPattern||'all'}}):[];
     out.push({id:p.id,name:p.name,hours:h,dayRules:rules.filter(function(r){return r&&[0,1,2,3,4,5,6].indexOf(r.day)!==-1&&ok.indexOf(r.pattern||'all')!==-1}).map(function(r){return{day:r.day,pattern:r.pattern||'all'}}),active:!!p.active});
   });
