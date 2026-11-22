@@ -68,6 +68,15 @@ def find_paths(node, path, found):
     return found
 
 
+def find_strings(node, found):
+    if isinstance(node, str) and node:
+        found.add(node)
+    elif isinstance(node, (dict, list)):
+        for value in node.values() if isinstance(node, dict) else node:
+            find_strings(value, found)
+    return found
+
+
 def planted(node, where, value, path=""):
     if isinstance(node, (dict, list)):
         for key, old, next_path in children(node, path):
@@ -107,8 +116,7 @@ def scenarios():
         yield path + " key", renamed(copy.deepcopy(RICH), path, lambda key: PLANT + key)
         yield path + " key with a date in front", renamed(copy.deepcopy(RICH), path, lambda key: key + PLANT)
     # some handlers are only reached when every record that links to a name or id carries the same planted value
-    strings = sorted({v for v in found.values() if isinstance(v, str) and v}
-                     | {"Alpha", "Beta", "Workone", "Knowone", "Typeone"})
+    strings = sorted(find_strings(RICH, set()))
     for value in strings:
         for shape in ("string", "backslash"):
             yield "every '%s' (%s)" % (value, shape), everywhere(copy.deepcopy(RICH), value, SHAPES[shape])
@@ -228,7 +236,34 @@ SWEEP = """async () => {
   }
   step('quotes', () => App.toggleQuotes());
   await new Promise((r) => setTimeout(r, 120));
+  const polluted = Object.keys(Object.prototype);
+  if (polluted.length) broke.push('Object.prototype polluted: ' + polluted.join());
   return { hits: [...new Set(window.__hits)], broke: [...new Set(broke)] };
+}"""
+
+# What a person does next with imported names: each action reads the name back from the page and saves it.
+SAVE_AGAIN = """async () => {
+  await new Promise((r) => setTimeout(r, 170));
+  const el = (id) => document.getElementById(id);
+  const broke = [];
+  const step = (name, action) => { try { action(); } catch (e) { broke.push(name + ': ' + e.message); } };
+  step('all', () => UI.renderAll());
+  step('journal', () => { SUM.init(); SUM.saveJournal(); SUM.init(); });
+  for (const type of ['study', 'work']) step('past ' + type, () => {
+    PAST.open(type);
+    el('pastNote').value = 'Again';
+    el('pastMins').value = '5';
+    PAST.save();
+  });
+  step('syllabus', () => {
+    el('sylSubj').selectedIndex = 1;
+    SYL.setupSubj();
+    el('sylLecCount').value = '7';
+    SYL.saveSetup();
+  });
+  step('recurring', () => { el('rcTitle').value = 'Again'; RECUR.add(); });
+  step('knowledge', () => { KNOW.init(); el('knAddTopic').value = 'Again'; KNOW.add(); });
+  return broke;
 }"""
 
 BUTTONS = """(odd) => {
@@ -372,7 +407,30 @@ with sync_playwright() as playwright:
             check("Gist %s, device %s: inert" % (how, label), not result["hits"], ", ".join(result["hits"]))
     cloud["content"] = None
 
-    # 3. odd but honest names still work in every button that carries them
+    # 3. a name that only becomes an object built-in after the page hands it back
+    for label, word in (("space", " __proto__"), ("NUL", "__pro" + chr(0) + "to__"), ("trailing space", "constructor "),
+                        ("tab and new line", "\\tconstructor\\n")):
+        word = word.replace("\\t", chr(9)).replace("\\n", chr(10))
+        crafted = copy.deepcopy(RICH)
+        for old in ("Alpha", "Workone", "Knowone", "Typeone", "Busy"):
+            crafted = everywhere(crafted, old, word)
+        for who, local in (("fresh", None), ("with data", copy.deepcopy(RICH) if label == "space" else None)):
+            if who == "with data" and local is None:
+                continue
+            reset()
+            if local:
+                local["study"], local["journal"], local["recurring"] = {}, {}, []
+                reset(local)
+            del errors[:]
+            page.evaluate(IMPORT, crafted)
+            page.reload(wait_until="load")
+            saved = page.evaluate(SAVE_AGAIN)
+            swept = load_and_sweep()
+            bad = saved + swept["broke"] + swept["hits"] + errors
+            check("save again with a built-in name (%s, %s device): nothing is polluted or broken" % (label, who),
+                  not bad, "; ".join(bad[:3]))
+
+    # 4. odd but honest names still work in every button that carries them
     odd = "Newton's \"Q&A\" <b> \\ x\nline &#39;);"
     named = copy.deepcopy(RICH)
     for old in ("Alpha", "Workone", "Knowone", "Typeone", "Rightone"):

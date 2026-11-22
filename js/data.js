@@ -95,17 +95,21 @@ function safePresets(list){
 var safeBackup=(function(){
   function own(o,k){return Object.prototype.hasOwnProperty.call(o,k)}
   function plain(v){return !!v&&typeof v==='object'&&!Array.isArray(v)}
-  function builtIn(s){return s in Object.prototype}
+  /* listed once at load: a page that gets polluted later must not turn honest names into reserved ones */
+  var BUILT_IN=Object.getOwnPropertyNames(Object.prototype);
+  function builtIn(s){return BUILT_IN.indexOf(s)!==-1}
   function text(v){return typeof v==='string'?v:typeof v==='number'&&isFinite(v)?String(v):''}
-  /* a name is also used as an object key, so it cannot be constructor, __proto__ and the like */
-  function name(v){var s=text(v);return builtIn(s)?s+'_':s}
+  /* a name is also used as an object key, so it cannot be constructor, __proto__ and the like - also not after an
+     <option> handed it back, which drops NUL and collapses white space */
+  function name(v){var s=text(v),k=s.replace(/\0/g,'').replace(/[\t\n\f\r ]+/g,' ').trim();return builtIn(k)?k+'_':s}
   /* the same bad id always becomes the same good one, so links and a second import still match */
   function id(v){
-    if(typeof v==='number'&&Number.isSafeInteger(v))return v;
-    if(typeof v==='string'&&/^[A-Za-z0-9_-]{1,128}$/.test(v)&&!builtIn(v))return v;
-    var s=String(JSON.stringify(v)),h=0;
-    for(var i=0;i<s.length;i++)h=(Math.imul(h,31)+s.charCodeAt(i))>>>0;
-    return 'imported_'+h.toString(36);
+    if(typeof v==='number'&&isFinite(v))return v;
+    if(typeof v==='string'&&/^[A-Za-z0-9_.-]{1,128}$/.test(v)&&!builtIn(v))return v;
+    /* two independent 32-bit hashes, so two different ids do not become one */
+    var s=String(JSON.stringify(v)),h=0x811c9dc5,g=5381;
+    for(var i=0;i<s.length;i++){var c=s.charCodeAt(i);h=Math.imul(h^c,16777619);g=Math.imul(g,33)+c|0}
+    return 'imported_'+(h>>>0).toString(36)+'_'+(g>>>0).toString(36);
   }
   function num(min,max,fallback){return function(v){
     if(v===null)return null;
@@ -114,11 +118,12 @@ var safeBackup=(function(){
   }}
   function one(choices,fallback){return function(v){return choices.indexOf(v)!==-1?v:fallback}}
   function flag(v){return typeof v==='boolean'?v:true}
-  var DAY=/^\d{4}-\d\d-\d\d$/,CLOCK=/^\d{1,3}:\d\d(:\d\d)?$/,ISO=/^\d{4}-\d\d-\d\d(T\d\d:\d\d(:\d\d(\.\d{1,6})?)?(Z|[+-]\d\d:?\d\d)?)?$/;
+  var DAY=/^\d{4,6}-\d\d-\d\d$/,CLOCK=/^\d{1,4}:\d\d(:\d\d)?$/,ISO=/^[+-]?\d{4,6}-\d\d-\d\d(T\d\d:\d\d(:\d\d(\.\d{1,6})?)?(Z|[+-]\d\d:?\d\d)?)?$/;
   function shaped(re){return function(v){return typeof v==='string'&&re.test(v)?v:''}}
   var date=shaped(DAY),time=shaped(CLOCK),iso=shaped(ISO);
   function moment(v){return typeof v==='number'&&isFinite(v)?v:iso(v)}
   function optTime(v){return v===null?null:time(v)}
+  function done(v){return v===true}
   function list(check,fallback){return function(v){
     if(!Array.isArray(v))return fallback?[]:undefined;
     return v.map(check).filter(function(x){return x!==undefined});
@@ -140,7 +145,7 @@ var safeBackup=(function(){
 
   var diff=one(['easy','medium','hard',''],''),priority=one(['critical','high','medium','low',''],'medium');
   var names=list(name),hours=num(0,1e6,0),secs=num(0,1e9,0),clock=num(0,48);
-  var sessions=map(day,list(record({cat:name,dur:secs,start:moment,end:moment,note:text,diff:diff,source:text,planId:id})));
+  var sessions=map(day,list(record({cat:name,dur:secs,start:moment,end:moment,note:text,topic:text,diff:diff,source:text,planId:id})));
   var todoFields={id:id,title:text,type:one(['todo','note',''],'todo'),priority:priority,due:date,content:text,
     status:one(['pending','done'],'pending'),completedAt:moment,createdAt:moment,repeat:one(['daily','weekly','monthly',''],''),
     estMins:num(0,1e7,0)};
@@ -151,7 +156,7 @@ var safeBackup=(function(){
       exams:list(record({id:id,name:text,subjects:list(name,true)})),
       dailyGoals:map(goalDay,num(0,1e6)),wakeTime:clock,bedtime:clock,effectiveMins:num(0,1440),
       dailyWake:map(day,clock),dailyBed:map(day,clock),goalPresets:safePresets}),
-    deadlines:list(record({id:id,type:one(['study','work','personal',''],''),title:text,date:moment})),
+    deadlines:list(record({id:id,type:one(['study','work','personal',''],''),title:text,date:moment,done:done})),
     revisions:list(record({id:id,subj:name,topic:text,diff:diff,created:date,revCount:num(0,1e6,0),
       history:list(record({date:date,diff:diff,type:text}),true),nextDate:date,active:flag})),
     recurring:list(record({id:id,title:text,rcType:name,time:time,active:flag,

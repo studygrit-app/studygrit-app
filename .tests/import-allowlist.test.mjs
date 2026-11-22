@@ -25,6 +25,8 @@ function load(source) {
   vm.createContext(ctx);
   vm.runInContext(`${source.replace('return{getLocal:gl', 'return{__merge:merge,__def:function(){return cp(DEF)},getLocal:gl')}\n;this.D = D;`, ctx);
   return {
+    // what a page does after it was poisoned: the guard must not learn new reserved words from it
+    pollute: (key) => vm.runInContext(`Object.prototype[${JSON.stringify(key)}] = NaN`, ctx),
     def: () => JSON.parse(JSON.stringify(ctx.D.__def())),
     // inputs are parsed inside the app's realm, exactly as doImp and getG do
     merge: (a, b) => {
@@ -172,7 +174,78 @@ check('a file that is not a backup is refused', [null, 'text', 5, [X]].every((v)
   }
 }));
 
-// 4. the release itself
+// 4. review 1: what an allowlist must not lose, and what the browser turns a name into
+const older = copy(rich);
+older.study['2026-11-21'][0].topic = 'Optics';
+older.deadlines[0].done = true;
+older.deadlines[1].done = false;
+check('fields of older records that the app still reads are kept', same(now.merge(now.def(), older), base.merge(now.def(), older)));
+older.deadlines[0].done = X;
+check('a planted done mark is not a done mark', now.merge(now.def(), older).deadlines[0].done === false);
+
+const CHOICES = [
+  ['journal.~.mood', ['😤', '😞', '😐', '😊', '🤩', '']],
+  ['deadlines.*.type', ['study', 'work', 'personal']],
+  ['revisions.*.diff', ['easy', 'medium', 'hard']],
+  ['study.~.*.diff', ['easy', 'medium', 'hard', '']],
+  ['recurring.*.pattern', ['daily', 'weekly', 'specific', 'fortnightly', 'monthly', 'yearly']],
+  ['recurring.*.days.*', [0, 1, 2, 3, 4, 5, 6]],
+  ['plans.~.*.planFor', ['study', 'work']],
+  ['plans.~.*.type', ['topic', 'lecture', 'revision', 'practice', 'other']],
+  ['plans.~.*.priority', ['critical', 'high', 'medium', 'low']],
+  ['plans.~.*.status', ['planned', 'in-progress', 'completed', 'skipped', 'carried']],
+  ['todos.study.*.type', ['todo', 'note']],
+  ['todos.study.*.priority', ['critical', 'high', 'medium', 'low']],
+  ['todos.study.*.status', ['pending', 'done']],
+  ['todos.study.*.repeat', ['', 'daily', 'weekly', 'monthly']],
+];
+const lost = [];
+for (const [path, values] of CHOICES) {
+  for (const value of values) {
+    const one = plant(path, value);
+    if (!same(now.merge(now.def(), one), base.merge(now.def(), one))) lost.push(`${path}=${value}`);
+  }
+}
+check(`every choice the app offers is kept (${lost.length} lost)`, !lost.length, lost.join(', '));
+
+const longYear = JSON.parse(JSON.stringify(rich).replaceAll('"2026-11-22"', '"20261-11-22"').replaceAll('2026-11-21T06:00', '+020261-02-11T06:00'));
+check('a long year from the date box is kept', same(now.merge(now.def(), longYear), base.merge(now.def(), longYear)));
+const otherIds = copy(rich);
+otherIds.knowledge[0].id = 'kn.1';
+otherIds.knowledge[1].id = 1700000000000.25;
+check('dotted and fractional ids are kept', same(now.merge(now.def(), otherIds), base.merge(now.def(), otherIds)));
+const twins = copy(rich);
+for (const [i, twin] of ['Aa!', 'BB!'].entries()) twins.deadlines[i].id = twin;
+const twinIds = now.merge(now.def(), twins).deadlines.map((d) => d.id);
+check('two different odd ids never become one', twinIds.length === 2 && twinIds[0] !== twinIds[1]);
+
+// an <option> hands a name back without NUL and with its ASCII white space collapsed
+const asOption = (s) => s.replace(/\0/g, '').replace(/[\t\n\f\r ]+/g, ' ').trim();
+const BUILT_IN = Object.getOwnPropertyNames(Object.prototype);
+const slipped = new Set();
+for (const word of BUILT_IN) {
+  for (const variant of [word, ` ${word}`, `${word} `, `\t${word}\n`, `${word.slice(0, 3)}\0${word.slice(3)}`, `\f${word}\r\n`]) {
+    const text = JSON.stringify(rich).replace(/"(Alpha|Workone|Knowone|Typeone|Busy|focused)"/g, () => JSON.stringify(variant));
+    const got = now.merge(now.def(), JSON.parse(text));
+    (function walk(node) {
+      if (typeof node === 'string' && BUILT_IN.includes(asOption(node))) slipped.add(JSON.stringify(variant));
+      else if (node && typeof node === 'object') for (const [key, value] of Object.entries(node)) {
+        if (BUILT_IN.includes(asOption(key))) slipped.add(JSON.stringify(variant));
+        walk(value);
+      }
+    })(got);
+  }
+}
+check(`no name turns into a built-in inside an <option> (${slipped.size})`, !slipped.size, [...slipped].slice(0, 8).join(' '));
+
+const poisoned = load(read('js/data.js'));
+const plain = JSON.parse(JSON.stringify(rich).replaceAll('"Workone"', '"work"').replaceAll('"Alpha"', '"total"'));
+const expected = base.merge(now.def(), plain);
+const fresh = poisoned.def();
+for (const key of ['work', 'total']) poisoned.pollute(key);
+check('an already poisoned page does not rename honest names', same(poisoned.merge(fresh, plain), expected));
+
+// 5. the release itself
 check('sw.js: the cache is newer than v48', Number(read('sw.js').match(/study-timer-v(\d+)/)[1]) >= 49);
 check('privacy.html is byte-identical', git('hash-object', 'privacy.html').trim() === git('rev-parse', `${BASE}:privacy.html`).trim());
 
