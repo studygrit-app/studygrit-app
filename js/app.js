@@ -56,7 +56,7 @@ function rmCat(type,name){if(!confirm('Remove "'+name+'"?'))return;var cfg=D.get
   D.setExams(exams);cfg.studySubjects=D.getAllSubjects();D.setCfg(cfg);
 } else if(type==='work')cfg.workCategories=cfg.workCategories.filter(function(s){return s!==name});else if(type==='knowledge')cfg.knowledgeCategories=(cfg.knowledgeCategories||[]).filter(function(s){return s!==name});D.setCfg(cfg);UI.renderAll();D.push()}
 function toggleTheme(){var cfg=D.getCfg();cfg.theme=cfg.theme==='dark'?'light':'dark';D.setCfg(cfg);document.documentElement.setAttribute('data-theme',cfg.theme);D.push()}
-function saveCfgExtra(){var cfg=D.getCfg();cfg.wakeTime=parseFloat(document.getElementById('cfgWakeTime').value)||6;cfg.bedtime=parseFloat(document.getElementById('cfgBedtime').value)||22.5;cfg.effectiveMins=parseInt(document.getElementById('cfgEffective').value)||50;var prEl=document.getElementById('cfgPlanRemindHour');if(prEl)cfg.planRemindHour=parseInt(prEl.value)||0;D.setCfg(cfg);D.push();try{App.renderTimeBudget()}catch(e){}try{App.renderBattleCry()}catch(e){}UI.toast('Settings saved')}
+function saveCfgExtra(){var cfg=D.getCfg();cfg.wakeTime=parseFloat(document.getElementById('cfgWakeTime').value)||6;cfg.bedtime=parseFloat(document.getElementById('cfgBedtime').value)||24;cfg.effectiveMins=parseInt(document.getElementById('cfgEffective').value)||50;var prEl=document.getElementById('cfgPlanRemindHour');if(prEl)cfg.planRemindHour=parseInt(prEl.value)||0;D.setCfg(cfg);D.push();try{App.renderTimeBudget()}catch(e){}try{App.renderBattleCry()}catch(e){}UI.toast('Settings saved')}
 var focusQuoteIv=null;
 function rotateFocusQuote(){var all=getAllQuotes();var q=all[Math.floor(Math.random()*all.length)];var el=document.getElementById('focusQuote');if(!el)return;el.style.opacity='0';el.style.transform='translateY(4px)';setTimeout(function(){el.textContent='"'+q+'"';el.style.opacity='1';el.style.transform='translateY(0)'},500)}
 function enterFocus(){if(!TM.isOn()){UI.toast('Start timer first');return}var fm=document.getElementById('focusMode');fm.classList.remove('hidden');var at=TM.activeType();/* Apply work/study color theme */fm.classList.toggle('focus-work',at==='work');document.getElementById('focusSub').textContent=at==='study'?'Studying':'Working';document.getElementById('focusCat').textContent=document.getElementById(at==='study'?'studyCat':'workCat').value;/* Start quote rotation */rotateFocusQuote();focusQuoteIv=setInterval(rotateFocusQuote,30000);updateFocusBtns();moveFocusTimer();focusMoveIv=setInterval(moveFocusTimer,8000)}
@@ -486,7 +486,7 @@ App.rmSubjectFromExam=function(examId,subject){if(!confirm('Remove "'+subject+'"
     h+='<span style="font-family:JetBrains Mono,monospace;font-size:.68rem;font-weight:700;color:var(--heading);letter-spacing:.08em;text-transform:uppercase">Time Budget</span>';
     h+='<span style="font-family:JetBrains Mono,monospace;font-size:.72rem;font-weight:700;color:var(--acc)">'+available.toFixed(1)+'h effective</span>';
     h+='</div>';
-    /* Format time values like 6.5 → "6:30 AM", 22.5 → "10:30 PM" */
+    /* Format time values like 13.5 to "1:30 PM" */
     function _fmtTime(t){
       var h=Math.floor(t),m=Math.round((t-h)*60);
       var ampm=h>=12?'PM':'AM';
