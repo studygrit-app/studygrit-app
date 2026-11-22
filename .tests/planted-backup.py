@@ -98,11 +98,13 @@ def renamed(node, where, rename, path=""):
     return node
 
 
-def everywhere(node, old, new):
+def everywhere(node, old, new, path=""):
     if isinstance(node, dict):
-        return {(new if k == old else k): everywhere(v, old, new) for k, v in node.items()}
+        # keys are data only inside a map (dates, subject names); a field name such as topic is not a value
+        return {(new if k == old and MAPS.match(path) else k): everywhere(v, old, new, path + "." + k if path else k)
+                for k, v in node.items()}
     if isinstance(node, list):
-        return [everywhere(v, old, new) for v in node]
+        return [everywhere(v, old, new, path + ".*") for v in node]
     return new if node == old else node
 
 
