@@ -166,7 +166,7 @@ var safeBackup=(function(){
       priority:priority,lecNum:num(0,1e5,null),status:one(['planned','in-progress','completed','skipped','carried'],'planned'),
       notes:text,actualSecs:secs,startTime:optTime,endTime:optTime,createdAt:moment,sortOrder:num(0,1e6,0)}))),
     todos:record({study:list(todo),work:list(todo)}),
-    journal:map(day,record({rating:num(0,5,0),mood:one(['😤','😞','😐','😊','🤩',''],''),dayType:text,
+    journal:map(day,record({rating:num(0,5,0),mood:one(['😤','😞','😐','😊','🤩',''],''),dayType:name,
       wentRight:text,wentWrong:text,notes:text,tags:list(name,true)}))
   });
   return function(v){if(!plain(v))throw new TypeError('not a backup');return backup(v)};

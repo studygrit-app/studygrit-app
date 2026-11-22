@@ -155,7 +155,7 @@ check('a replaced id keeps its link to the session',
 check('a replaced id is the same on a second import', same(now.merge(out, linked), out));
 
 const reserved = JSON.parse(JSON.stringify(rich)
-  .replaceAll('"Alpha"', '"__proto__"').replaceAll('"Knowone"', '"constructor"').replaceAll('rc_1700000000000', 'constructor'));
+  .replaceAll('"Alpha"', '"__proto__"').replaceAll('"Knowone"', '"constructor"').replaceAll('"Busy"', '"__proto__"').replaceAll('rc_1700000000000', 'constructor'));
 let builtIn;
 try {
   builtIn = /"(__proto__|constructor)"/.test(JSON.stringify(now.merge(now.def(), reserved)));
