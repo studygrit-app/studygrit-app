@@ -87,7 +87,7 @@ var SUM=(function(){
     h+='<div class="df" style="margin-bottom:6px"><span class="df-lbl">Day Type</span>';
     h+='<select class="cat-sel" id="sumDayType" onchange="SUM.saveJournal()" style="flex:1">';
     ['Normal','Busy','Light','Rest','Other'].concat(entry.dayType&&['Normal','Busy','Light','Rest','Other'].indexOf(entry.dayType)===-1?[entry.dayType]:[]).forEach(function(t){
-      h+='<option'+(entry.dayType===t?' selected':'')+'>'+t+'</option>';
+      h+='<option'+(entry.dayType===t?' selected':'')+'>'+esc(t)+'</option>';
     });
     h+='</select></div>';
     h+='<div class="df" style="margin-bottom:6px"><span class="df-lbl">Day Rating</span><div class="mood-sel" style="margin:0">';
@@ -611,7 +611,7 @@ var SUM=(function(){
       typeKeys.forEach(function(t,i){
         var d=byType[t];var avgS=Math.round(d.study/d.count);var avgW=Math.round(d.work/d.count);var avgT=Math.round(d.total/d.count);
         var barPct=Math.max(8,Math.round(avgT/((byType[typeKeys[0]].total/byType[typeKeys[0]].count)||1)*100));
-        h+='<div style="margin-bottom:6px"><div style="display:flex;justify-content:space-between;font-size:.68rem;margin-bottom:2px"><span style="font-weight:600;color:var(--heading)">'+t+'</span><span style="color:var(--td)">'+d.count+' days</span></div>';
+        h+='<div style="margin-bottom:6px"><div style="display:flex;justify-content:space-between;font-size:.68rem;margin-bottom:2px"><span style="font-weight:600;color:var(--heading)">'+esc(t)+'</span><span style="color:var(--td)">'+d.count+' days</span></div>';
         h+='<div style="height:14px;background:var(--s3);border-radius:4px;overflow:hidden;position:relative"><div style="height:100%;width:'+barPct+'%;background:'+_COLORS[i%_COLORS.length]+';border-radius:4px"></div></div>';
         h+='<div style="display:flex;gap:8px;font-size:.55rem;color:var(--tf);margin-top:2px"><span>Study: '+UI.fd(avgS)+'/d</span><span>Work: '+UI.fd(avgW)+'/d</span><span>Total: '+UI.fd(avgT)+'/d</span></div></div>';
       });
