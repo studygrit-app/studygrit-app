@@ -27,7 +27,10 @@ else:
         def log_message(self, *args):
             pass
 
-    server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), functools.partial(Quiet, directory=target))
+    class Server(http.server.ThreadingHTTPServer):
+        request_queue_size = 64  # the default 5 refuses some of the ~18 files a reload asks for at once
+
+    server = Server(("127.0.0.1", 0), functools.partial(Quiet, directory=target))
     threading.Thread(target=server.serve_forever, daemon=True).start()
     URL = "http://127.0.0.1:%d/index.html" % server.server_address[1]
 ORIGIN = URL.rsplit("/", 1)[0] + "/"
@@ -119,6 +122,13 @@ WATCH = """
   window.prompt = () => null;
   window.alert = () => {};
   window.print = () => {};
+  // the frozen app starts a 100 ms timer that needs scripts loaded after it: on a slow load it throws, backup or not
+  const later = window.setTimeout.bind(window);
+  window.setTimeout = (...args) => {
+    if (document.readyState !== 'loading') return later(...args);
+    document.addEventListener('DOMContentLoaded', () => later(...args), { once: true });
+    return 0;
+  };
   new MutationObserver((changes) => {
     for (const change of changes) for (const node of change.addedNodes)
       if (node.nodeType === 1 && (node.matches('[data-planted]') || node.querySelector('[data-planted]'))) window.__hits.push('markup built');
